@@ -1,0 +1,61 @@
+.register-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  background-color: #f5f5f5;
+}
+
+mat-card {
+  max-width: 400px;
+  width: 100%;
+}
+
+mat-card-header {
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+mat-form-field {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+mat-card-title {
+  font-size: 24px;
+  text-align: center;
+}
+
+.verification-btn {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 20px;
+}
+
+.verification-btn button {
+  min-width: 150px;
+}
+
+.verification-btn span {
+  font-size: 0.9rem;
+  color: #999;
+}
+
+.button-group {
+  display: flex;
+  justify-content: space-between; /* 確保按鈕水平排列 */
+  gap: 16px; /* 添加按鈕間距 */
+  margin-top: 20px;
+}
+
+button {
+  min-width: 140px; /* 保證按鈕寬度一致 */
+  height: 40px; /* 保證按鈕高度一致 */
+}

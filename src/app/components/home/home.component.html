@@ -1,0 +1,79 @@
+<div class="container">
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-content">
+        <h1 class="hero-title">智慧點餐系統</h1>
+        <p class="hero-subtitle">輕鬆掃碼，立即點餐</p>
+        <div *ngIf="account">
+            <p>歡迎，{{ account }}!</p> <!-- 顯示使用者帳號 -->
+          </div>
+          <div class="auth-buttons">
+            <!-- 當 account 為空時，顯示登入與註冊按鈕 -->
+            <div *ngIf="!isLoggedIn">
+              <button mat-raised-button color="primary" routerLink="/auth/login">登入</button>
+              <button mat-stroked-button routerLink="/auth/register">註冊</button>
+            </div>
+          
+            <!-- 當 account 有值時，顯示登出按鈕 -->
+            <button *ngIf="isLoggedIn" mat-raised-button color="warn" (click)="logout()">登出</button>
+          </div>
+      </div>
+      <div class="hero-image">
+        <img src="assets/images/hero-image.svg" alt="點餐示意圖">
+      </div>
+    </section>
+  
+    <!-- 使用說明 -->
+    <section class="how-to-use">
+      <h2>如何使用</h2>
+      <div class="features-grid">
+        <mat-card class="feature-card">
+          <mat-card-header>
+            <mat-card-title>商家註冊</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <p>簡單註冊，獲取專屬店家QR Code</p>
+          </mat-card-content>
+        </mat-card>
+  
+        <mat-card class="feature-card">
+          <mat-card-header>
+            <mat-card-title>設置菜單</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <p>輕鬆上傳菜品，管理價格與分類</p>
+          </mat-card-content>
+        </mat-card>
+  
+        <mat-card class="feature-card">
+          <mat-card-header>
+            <mat-card-title>顧客點餐</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <p>掃碼點餐，快速便捷</p>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </section>  
+
+</div>
+
+<footer class="footer">
+    <div class="footer-content">
+      <div class="contact-info">
+        <h3>聯絡我們</h3>
+        <p>電話: (02) 1234-5678</p>
+        <p>信箱: info&#64;smartorder.com</p>
+        <p>地址: 台北市中正區重慶南路一段122號</p>
+      </div>
+      <div class="social-media">
+        <h3>追蹤我們</h3>
+        <a href="#">Facebook</a>
+        <a href="#">Instagram</a>
+        <a href="#">Twitter</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2023 智慧點餐系統. All rights reserved.</p>
+    </div>
+  </footer>  
