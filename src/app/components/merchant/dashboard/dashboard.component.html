@@ -1,1 +1,160 @@
-<p>dashboard works!</p>
+<div class="dashboard-container">
+  <form [formGroup]="storeForm" (ngSubmit)="onSubmit()">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>商店資訊設定</mat-card-title>
+      </mat-card-header>
+      
+      <div class="file-upload-container">
+        <!-- 自定义按钮触发文件选择 -->
+        <button mat-raised-button class="file-upload-button" (click)="fileInput.click()">選擇Logo</button>
+        <!-- 隐藏的文件输入框 -->
+        <input type="file" id="logo-upload" #fileInput (change)="onLogoSelected($event)" class="file-upload-input" />
+        <!-- 显示选择的文件名 -->
+        <div *ngIf="selectedFileName" class="file-name">
+          <p>選擇的文件: {{ selectedFileName }}</p>
+        </div>
+        <!-- 错误提示 -->
+        <mat-error *ngIf="storeForm.get('logo')?.errors?.['required']">
+          請上傳Logo
+        </mat-error>
+      </div>
+
+      <mat-card-content>
+        <!-- 基本資訊 -->
+        <div class="form-section basic-info">
+          <mat-form-field>
+            <mat-label>商店名稱</mat-label>
+            <input matInput formControlName="storeName">
+            <mat-error *ngIf="storeForm.get('storeName')?.errors?.['required']">
+              商店名稱為必填欄位
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>商店描述</mat-label>
+            <textarea matInput formControlName="description" rows="3"></textarea>
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>聯絡電話</mat-label>
+            <input matInput formControlName="phone">
+            <mat-error *ngIf="storeForm.get('phone')?.errors?.['required']">
+              聯絡電話為必填欄位
+            </mat-error>
+            <mat-error *ngIf="storeForm.get('phone')?.errors?.['pattern']">
+              請輸入有效的電話號碼
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>電子信箱</mat-label>
+            <input matInput formControlName="email" type="email">
+            <mat-error *ngIf="storeForm.get('email')?.errors?.['required']">
+              電子信箱為必填欄位
+            </mat-error>
+            <mat-error *ngIf="storeForm.get('email')?.errors?.['email']">
+              請輸入有效的電子信箱
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- 地址資訊 -->
+        <div class="form-section address-section">
+          <div class="address-grid">
+            
+            <mat-form-field>
+              <mat-label>郵遞區號</mat-label>
+              <input matInput formControlName="postCode" readonly>
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>縣市</mat-label>
+              <mat-select formControlName="city">
+                <mat-option *ngFor="let city of cities" [value]="city.id">
+                  {{city.name}}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="storeForm.get('city')?.errors?.['required']">
+                請選擇縣市
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>鄉鎮區域</mat-label>
+              <mat-select formControlName="district">
+                <mat-option *ngFor="let district of selectedDistricts" [value]="district.id">
+                  {{district.name}}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="storeForm.get('district')?.errors?.['required']">
+                請選擇鄉鎮區域
+              </mat-error>
+            </mat-form-field>
+
+          </div>
+
+          <mat-form-field class="full-width">
+            <mat-label>詳細地址</mat-label>
+            <input matInput formControlName="streetAddress">
+            <mat-error *ngIf="storeForm.get('streetAddress')?.errors?.['required']">
+              請輸入詳細地址
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- 營業時間 -->
+        <div class="business-hours-section">
+          <h3>營業時間設定</h3>
+          <div class="business-hours-grid" formArrayName="businessHours">
+            <div *ngFor="let hour of businessHours.controls; let i = index" 
+                 [formGroupName]="i" 
+                 class="business-hour-item">
+              <div class="business-hour-header">
+                <mat-checkbox formControlName="isOpen" class="day-checkbox">
+                  {{hour.get('week')?.value}}
+                </mat-checkbox>
+              </div>
+              <div class="business-hour-content" *ngIf="hour.get('isOpen')?.value">
+                <div class="time-range">
+                  <mat-form-field appearance="outline">
+                    <mat-label>開始時間</mat-label>
+                    <input matInput type="time" formControlName="openTime">
+                  </mat-form-field>
+                  <span class="time-separator">至</span>
+                  <mat-form-field appearance="outline">
+                    <mat-label>結束時間</mat-label>
+                    <input matInput type="time" formControlName="closeTime">
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 座位數量 -->
+        <div class="form-section seats-section">
+          <mat-form-field>
+            <mat-label>座位數量</mat-label>
+            <input matInput type="number" formControlName="seats" min="0">
+            <mat-error *ngIf="storeForm.get('seats')?.errors?.['required']">
+              請輸入座位數量
+            </mat-error>
+            <mat-error *ngIf="storeForm.get('seats')?.errors?.['min']">
+              座位數量不能小於0
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions>
+        <button mat-raised-button
+                color="primary" 
+                type="submit" 
+                [disabled]="!storeForm.valid || storeForm.pristine">
+          儲存設定
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </form>
+</div>

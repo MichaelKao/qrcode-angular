@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-home',
@@ -18,6 +20,8 @@ import { RouterModule } from '@angular/router';
 })
 export class HomeComponent implements OnInit {
 
+  constructor(private router: Router, private snackBar: MatSnackBar) {}
+
   account: string | null = '';
 
   isLoggedIn: boolean = false;
@@ -26,7 +30,8 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     // 確保 localStorage 可用
     if (typeof localStorage !== 'undefined') {
-      this.account = localStorage.getItem('user'); // 從 localStorage 取得帳號
+      const userData = JSON.parse(localStorage.getItem('user') ?? '{}');
+      this.account =  userData.account
       this.isLoggedIn = !!this.account;
     }
 
@@ -34,10 +39,22 @@ export class HomeComponent implements OnInit {
 
   logout(): void {
     if (typeof localStorage !== 'undefined') {
-      localStorage.removeItem('user'); // 移除使用者資料
+      localStorage.removeItem('user'); 
     }
-    this.account = '尚未登入'; // 重置帳號
-    this.isLoggedIn = false; // 更新登入狀態
+    this.account = null; 
+    this.isLoggedIn = false; 
+  }
+
+  navigateToMerchantDashboard() {
+
+    const userData = JSON.parse(localStorage.getItem('user') ?? '{}');
+
+    if (userData && userData.account) {
+      this.router.navigate(['/merchant/dashboard']);
+    } else {
+      this.snackBar.open('請先登入', '關閉', { duration: 3000 });
+    }
+    
   }
 
 }

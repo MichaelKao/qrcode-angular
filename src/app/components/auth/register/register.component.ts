@@ -55,13 +55,13 @@ export class RegisterComponent {
 
       this.isSendingCode = true;
       this.isVerificationCodeSent = true;
-      this.timeRemaining = 60; // 設置倒計時60秒
+      this.timeRemaining = 60; 
 
       // 開始倒計時，1秒更新一次
       const subscription = timer(0, 1000).subscribe((time) => {
         this.timeRemaining = 60 - time;
         if (this.timeRemaining <= 0) {
-          this.isSendingCode = false; // 恢復發送按鈕
+          this.isSendingCode = false; 
           this.isVerificationCodeSent = false;
           subscription.unsubscribe();
         }
@@ -80,7 +80,7 @@ export class RegisterComponent {
             alert('發送驗證碼失敗，請稍後再試');
           }
         });
-      }, 2000); // 模擬2秒發送延遲
+      }, 2000); 
     
   }
 
@@ -89,7 +89,7 @@ export class RegisterComponent {
       this.http.post('http://localhost:8080/qrcode/user/signIn', this.registerForm.value)
         .subscribe({
           next: (response: any) => {
-            localStorage.setItem('user', response.data.account);
+            localStorage.setItem('user', JSON.stringify(response.data));
             // 註冊成功，跳轉到 home 頁面
             this.router.navigate(['/']);
           },
@@ -103,7 +103,7 @@ export class RegisterComponent {
   }
 
   goToForgotPassword(): void {
-    this.router.navigate(['/auth/forgot-password']); // 跳转到忘记密码页面
+    this.router.navigate(['/auth/forgot-password']); 
   }
 
 }

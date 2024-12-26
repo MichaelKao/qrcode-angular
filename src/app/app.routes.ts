@@ -3,7 +3,9 @@ import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/auth/login/login.component';
 import { RegisterComponent } from './components/auth/register/register.component';
 import { ForgotPasswordComponent } from './components/auth/forgot-password/forgot-password.component';
-import { DashboardComponent } from './components/merchant/dashboard/dashboard.component';
+import { DashboardComponent  } from './components/merchant/dashboard/dashboard.component';
+
+
 import { QrManagementComponent } from './components/merchant/qr-management/qr-management.component';
 import { MenuManagementComponent } from './components/merchant/menu-management/menu-management.component';
 

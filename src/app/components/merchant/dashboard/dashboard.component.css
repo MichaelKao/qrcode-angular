@@ -1,0 +1,257 @@
+/* 基礎容器樣式 */
+.dashboard-container {
+  padding: 24px;
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: #ffffff;
+  min-height: 100vh;
+}
+
+/* Card 樣式 */
+mat-card {
+  background-color: #f8f9fa;
+  border-radius: 16px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+  margin-bottom: 24px;
+  padding: 24px;
+}
+
+mat-card-header {
+  padding: 0;
+  margin-bottom: 24px;
+}
+
+mat-card-title {
+  font-size: 24px;
+  color: #333333;
+  font-weight: 500;
+  margin: 0;
+}
+
+/* 表單區段樣式 */
+.form-section {
+  margin-bottom: 24px;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 12px;
+}
+
+/* 表單欄位基礎樣式 */
+mat-form-field {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+  background-color: #f0f0f0;
+  border-radius: 8px;
+}
+
+::ng-deep .mat-form-field-wrapper {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline-thick {
+  color: #e0e0e0;
+}
+
+/* 地址區塊樣式 */
+.address-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+/* 營業時間區塊樣式 */
+.business-hours-section {
+  margin-top: 24px;
+  padding: 24px;
+  background-color: #ffffff;
+  border-radius: 12px;
+}
+
+.business-hours-section h3 {
+  margin: 0 0 24px 0;
+  font-size: 18px;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.business-hours-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.business-hour-item {
+  background-color: #f0f0f0;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+}
+
+.business-hour-header {
+  margin-bottom: 16px;
+}
+
+.business-hour-content {
+  padding-left: 32px;
+}
+
+.time-range {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 16px;
+}
+
+.time-separator {
+  text-align: center;
+  color: #ffffff;
+  font-size: 14px;
+  margin-bottom: 22px;
+}
+
+/* Checkbox 樣式 */
+.day-checkbox {
+  font-size: 16px;
+}
+
+::ng-deep .mat-checkbox-checked .mat-checkbox-background {
+  background-color: #2196f3 !important;
+}
+
+/* 按鈕區域樣式 */
+mat-card-actions {
+  padding: 16px 0 0 0;
+  display: flex;
+  justify-content: flex-end;
+  border-top: 1px solid #f0f0f0;
+  margin: 24px 0 0 0 !important;
+}
+
+mat-card-actions button {
+  min-width: 120px;
+  height: 44px;
+  border-radius: 8px;
+  font-weight: 500;
+  padding: 0 32px;
+}
+
+button[mat-raised-button] {
+  background-color: #2196f3;
+  color: white;
+}
+
+button[mat-raised-button]:disabled {
+  background-color: #e0e0e0;
+  color: #999999;
+}
+
+/* 錯誤訊息樣式 */
+mat-error {
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+/* 基本容器样式 */
+.file-upload-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+/* 標籤樣式 */
+mat-label {
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 8px;
+  font-weight: 500;
+  display: inline-block;
+}
+
+/* 隐藏的文件输入框 */
+.file-upload-input {
+  display: none; /* 隐藏原本的 file input 按钮 */
+}
+
+/* 自定义按钮样式 */
+.file-upload-button {
+  margin-top: 8px;
+  padding: 10px 24px;
+  background-color: #2196f3;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  box-sizing: border-box;
+  border-radius: 4px;
+}
+
+.file-upload-button:hover {
+  background-color: #1976d2;
+}
+
+/* 響應式設計 */
+@media screen and (max-width: 768px) {
+  .dashboard-container {
+    padding: 16px;
+  }
+
+  mat-card {
+    padding: 16px;
+  }
+
+  .address-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .time-range {
+    gap: 8px;
+  }
+
+  .business-hour-content {
+    padding-left: 16px;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .dashboard-container {
+    padding: 12px;
+  }
+
+  mat-card-title {
+    font-size: 20px;
+  }
+
+  .address-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .time-range {
+    grid-template-columns: 1fr;
+  }
+
+  .time-separator {
+    display: none;
+  }
+
+  .business-hour-content {
+    padding-left: 8px;
+  }
+
+  mat-card-actions {
+    flex-direction: column;
+  }
+
+  mat-card-actions button {
+    width: 100%;
+  }
+  
+}

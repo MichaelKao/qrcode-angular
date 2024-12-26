@@ -17,7 +17,7 @@ import { MatButtonModule } from '@angular/material/button';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    HttpClientModule, // 引入 HttpClientModule
+    HttpClientModule, 
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
@@ -45,12 +45,11 @@ export class ForgotPasswordComponent {
       
       const url = `http://localhost:8080/qrcode/user/forgetPassword/${encodeURIComponent(email)}`;
 
-      // 发送 POST 请求到后端，传递电子邮件地址
       this.http.get(url)
         .subscribe({
         next: (response: any) => {
           this.snackBar.open('密码重置链接已发送到您的电子邮件', '关闭', { duration: 3000 });
-          this.router.navigate(['/login']); // 跳转到登录页面
+          this.router.navigate(['/login']); 
         },
         error: (err) => {
           this.snackBar.open('发送失败，请检查电子邮件地址', '关闭', { duration: 3000 });
@@ -62,7 +61,7 @@ export class ForgotPasswordComponent {
   }
 
   goBack(): void {
-    this.location.back(); // 返回上一页
+    this.location.back(); 
   }
 
 }

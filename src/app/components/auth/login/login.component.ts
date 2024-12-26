@@ -17,7 +17,7 @@ import { MatButtonModule } from '@angular/material/button';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    HttpClientModule, // 引入 HttpClientModule
+    HttpClientModule, 
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
@@ -41,8 +41,8 @@ export class LoginComponent {
         next: (response: any) => {
           if (response.code === 200) {
             this.snackBar.open('登入成功', '關閉', { duration: 3000 });
-            localStorage.setItem('user', response.data.account); // 儲存使用者資料
-            this.router.navigate(['/']); // 跳轉到首頁
+            localStorage.setItem('user', JSON.stringify(response.data));
+            this.router.navigate(['/']); 
           } else {
             this.snackBar.open('登入失敗，請檢查帳號或密碼', '關閉', { duration: 3000 });
           }
@@ -58,11 +58,11 @@ export class LoginComponent {
   }
 
   goBack(): void {
-    this.location.back(); // 返回上一頁
+    this.location.back(); 
   }
 
   goToForgotPassword(): void {
-    this.router.navigate(['/auth/forgot-password']); // 跳转到忘记密码页面
+    this.router.navigate(['/auth/forgot-password']);
   }
 
 }
