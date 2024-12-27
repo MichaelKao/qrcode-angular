@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { FormBuilder, FormGroup, FormArray, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -52,7 +52,7 @@ export class DashboardComponent implements OnInit {
   districts: District[] = [];
   selectedDistricts: District[] = [];
 
-  constructor(private fb: FormBuilder, private http: HttpClient, private snackBar: MatSnackBar, private router: Router) {
+  constructor(private fb: FormBuilder, private http: HttpClient, private snackBar: MatSnackBar, private router: Router, private location: Location) {
     this.initForm();  
   }
 
@@ -611,4 +611,9 @@ export class DashboardComponent implements OnInit {
 
     }
   }
+
+  goBack() {
+    this.location.back();
+  }
+
 }

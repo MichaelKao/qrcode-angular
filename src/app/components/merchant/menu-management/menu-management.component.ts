@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 
 interface BusinessHour {
@@ -25,13 +25,16 @@ export class MenuManagementComponent implements OnInit {
   storeForm: FormGroup;
   isEditing = false;
   
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private location: Location) {
     this.storeForm = this.fb.group({
       storeName: ['', Validators.required],
       description: [''],
       phone: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      address: [''],
+      postCode: ['', Validators.required],
+      city: ['', Validators.required],
+      district: ['', Validators.required],
+      streetAddress: ['', Validators.required],
       seats: [0],
       businessHoursList: this.fb.array([])
     });
@@ -48,42 +51,60 @@ export class MenuManagementComponent implements OnInit {
   }
 
   loadStoreData() {
-    const userData = JSON.parse(localStorage.getItem('user') || '{}');
-    const storeData = userData?.userStoreVo;
-    
-    if (storeData) {
-      this.storeForm.patchValue({
-        storeName: storeData.storeName,
-        description: storeData.description,
-        phone: storeData.phone,
-        email: storeData.email,
-        address: storeData.address,
-        seats: storeData.seats
-      });
 
-      // 設置營業時間
-      const hoursArray = this.storeForm.get('businessHoursList') as FormArray;
-      // 清空現有的營業時間
-      while (hoursArray.length) {
-        hoursArray.removeAt(0);
+    if (typeof window !== 'undefined') {
+
+      const userData = JSON.parse(localStorage.getItem('user') || '{}');
+      const storeData = userData?.userStoreVo;
+      
+      if (storeData) {
+        this.storeForm.patchValue({
+          storeName: storeData.storeName,
+          description: storeData.description,
+          phone: storeData.phone,
+          email: storeData.email,
+          postCode: storeData.postCode,
+          city: storeData.city,
+          district: storeData.district,
+          streetAddress: storeData.streetAddress,
+          seats: storeData.seats
+        });
+  
+        // 設置營業時間
+        const hoursArray = this.storeForm.get('businessHoursList') as FormArray;
+        // 清空現有的營業時間
+        while (hoursArray.length) {
+          hoursArray.removeAt(0);
+        }
+        // 添加新的營業時間
+        storeData.businessHoursList.forEach((hour: BusinessHour) => {
+          hoursArray.push(this.fb.group({
+            seq: [{value: hour.seq, disabled: !this.isEditing}],
+            week: [{value: hour.week, disabled: !this.isEditing}],
+            isOpen: [{value: hour.isOpen, disabled: !this.isEditing}],
+            openTime: [{value: hour.openTime, disabled: !this.isEditing}],
+            closeTime: [{value: hour.closeTime, disabled: !this.isEditing}]
+          }));
+        });
       }
-      // 添加新的營業時間
-      storeData.businessHoursList.forEach((hour: BusinessHour) => {
-        hoursArray.push(this.fb.group({
-          seq: [hour.seq],
-          week: [hour.week],
-          isOpen: [hour.isOpen],
-          openTime: [hour.openTime],
-          closeTime: [hour.closeTime]
-        }));
-      });
+
     }
+
   }
 
   toggleEdit() {
     this.isEditing = !this.isEditing;
+    const hoursArray = this.storeForm.get('businessHoursList') as FormArray;
+    
+    hoursArray.controls.forEach(control => {
+      if (this.isEditing) {
+        control.enable();
+      } else {
+        control.disable();
+      }
+    });
+
     if (!this.isEditing) {
-      // 取消編輯時重新載入資料
       this.loadStoreData();
     }
   }
@@ -94,4 +115,9 @@ export class MenuManagementComponent implements OnInit {
       // TODO: 實作更新資料的 API 呼叫
     }
   }
+
+  goBack() {
+    this.location.back();
+  }
+  
 }

@@ -1,5 +1,12 @@
 <!-- store-edit.component.html -->
 <div class="store-container">
+
+    <div class="header-section">
+        <button class="back-button" (click)="goBack()">
+          返回上一頁
+        </button>
+    </div>
+
     <h2>商店資訊</h2>
     
     <div class="action-buttons">
@@ -34,9 +41,37 @@
           <input type="email" formControlName="email" [readonly]="!isEditing">
         </div>
   
-        <div class="form-group">
-          <label>商店地址</label>
-          <input type="text" formControlName="address" [readonly]="!isEditing">
+        <div class="address-section">
+            <h3>地址資訊</h3>
+            <div class="address-grid">
+              <div class="form-group">
+                <label>郵遞區號</label>
+                <input type="text" 
+                       formControlName="postCode" 
+                       [readonly]="!isEditing">
+              </div>
+          
+              <div class="form-group">
+                <label>縣市</label>
+                <input type="text" 
+                       formControlName="city" 
+                       [readonly]="!isEditing">
+              </div>
+          
+              <div class="form-group">
+                <label>鄉鎮區域</label>
+                <input type="text" 
+                       formControlName="district" 
+                       [readonly]="!isEditing">
+              </div>
+          
+              <div class="form-group">
+                <label>詳細地址</label>
+                <input type="text" 
+                       formControlName="streetAddress" 
+                       [readonly]="!isEditing">
+              </div>
+            </div>
         </div>
   
         <div class="form-group">
@@ -46,18 +81,24 @@
       </div>
   
       <div class="business-hours" formArrayName="businessHoursList">
-        <h3>營業時間</h3>
+        <h3>營業時間設定</h3>
         <div class="hours-grid">
           <ng-container *ngFor="let hour of businessHourControls; let i = index">
             <div class="hour-item" [formGroupName]="i">
               <span class="day">{{hour.get('week')?.value}}</span>
               <div class="time-range">
-                <input type="time" formControlName="openTime" [readonly]="!isEditing">
+                <input type="time" 
+                       formControlName="openTime" 
+                       [disabled]="!isEditing">
                 <span>至</span>
-                <input type="time" formControlName="closeTime" [readonly]="!isEditing">
+                <input type="time" 
+                       formControlName="closeTime" 
+                       [disabled]="!isEditing">
               </div>
               <label class="switch">
-                <input type="checkbox" formControlName="isOpen" [disabled]="!isEditing">
+                <input type="checkbox" 
+                       formControlName="isOpen" 
+                       [disabled]="!isEditing">
                 <span class="slider"></span>
               </label>
             </div>

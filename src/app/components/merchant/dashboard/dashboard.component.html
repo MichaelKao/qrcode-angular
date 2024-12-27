@@ -1,4 +1,11 @@
 <div class="dashboard-container">
+
+  <div class="header-section">
+    <button class="back-button" (click)="goBack()">
+      返回上一頁
+    </button>
+  </div>
+  
   <form [formGroup]="storeForm" (ngSubmit)="onSubmit()">
     <mat-card>
       <mat-card-header>
@@ -103,32 +110,23 @@
           </mat-form-field>
         </div>
 
-        <!-- 營業時間 -->
-        <div class="business-hours-section">
+        <div class="business-hours" formArrayName="businessHours">
           <h3>營業時間設定</h3>
-          <div class="business-hours-grid" formArrayName="businessHours">
-            <div *ngFor="let hour of businessHours.controls; let i = index" 
-                 [formGroupName]="i" 
-                 class="business-hour-item">
-              <div class="business-hour-header">
-                <mat-checkbox formControlName="isOpen" class="day-checkbox">
-                  {{hour.get('week')?.value}}
-                </mat-checkbox>
-              </div>
-              <div class="business-hour-content" *ngIf="hour.get('isOpen')?.value">
+          <div class="hours-grid">
+            <ng-container *ngFor="let hour of businessHours.controls; let i = index">
+              <div class="hour-item" [formGroupName]="i">
+                <span class="day">{{hour.get('week')?.value}}</span>
                 <div class="time-range">
-                  <mat-form-field appearance="outline">
-                    <mat-label>開始時間</mat-label>
-                    <input matInput type="time" formControlName="openTime">
-                  </mat-form-field>
-                  <span class="time-separator">至</span>
-                  <mat-form-field appearance="outline">
-                    <mat-label>結束時間</mat-label>
-                    <input matInput type="time" formControlName="closeTime">
-                  </mat-form-field>
+                  <input type="time" formControlName="openTime">
+                  <span>至</span>
+                  <input type="time" formControlName="closeTime">
                 </div>
+                <label class="switch">
+                  <input type="checkbox" formControlName="isOpen">
+                  <span class="slider"></span>
+                </label>
               </div>
-            </div>
+            </ng-container>
           </div>
         </div>
 

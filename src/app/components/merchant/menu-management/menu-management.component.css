@@ -3,6 +3,29 @@
     max-width: 800px;
     margin: 0 auto;
     padding: 20px;
+    background-color: #fff;
+  }
+  
+  .header-section {
+    margin-bottom: 20px;
+  }
+  
+  .back-button {
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    padding: 6px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  .back-button:hover {
+    background-color: #f5f5f5;
+  }
+  
+  h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
   }
   
   .action-buttons {
@@ -18,6 +41,7 @@
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    font-size: 14px;
   }
   
   .edit-button {
@@ -39,7 +63,7 @@
     background-color: #fff;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
   }
   
   .form-group {
@@ -50,6 +74,7 @@
     display: block;
     margin-bottom: 5px;
     font-weight: 500;
+    color: #333;
   }
   
   input, textarea {
@@ -57,6 +82,7 @@
     padding: 8px;
     border: 1px solid #ddd;
     border-radius: 4px;
+    background-color: #fff;
   }
   
   input[readonly], textarea[readonly] {
@@ -64,46 +90,103 @@
     cursor: not-allowed;
   }
   
-  .business-hours {
+  input:disabled,
+  textarea:disabled {
+    background-color: #f5f5f5 !important;
+    cursor: not-allowed !important;
+    opacity: 0.7;
+    color: #666;
+  }
+  
+  /* 地址區塊樣式 */
+  .address-section {
     margin-top: 20px;
   }
   
-  .hours-grid {
+  .address-section h3 {
+    margin-bottom: 15px;
+    font-size: 16px;
+  }
+  
+  .address-grid {
     display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+  
+  /* 營業時間樣式 */
+  .business-hours {
+    margin-top: 20px;
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+  }
+  
+  .business-hours h3 {
+    margin-bottom: 15px;
+    font-size: 16px;
+  }
+  
+  .hours-grid {
+    display: flex;
+    flex-direction: column;
     gap: 10px;
   }
   
   .hour-item {
     display: grid;
-    grid-template-columns: 100px 1fr 80px;
+    grid-template-columns: 80px 1fr 80px;
     align-items: center;
-    padding: 10px;
-    background-color: #f8f9fa;
+    background-color: #fff;
+    padding: 12px;
     border-radius: 4px;
+    gap: 15px;
+  }
+  
+  .day {
+    font-weight: 500;
   }
   
   .time-range {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
   }
   
   .time-range input {
-    width: 120px;
+    width: 110px;
+    text-align: center;
+  }
+  
+  .time-range input:disabled {
+    background-color: #f5f5f5;
+    cursor: not-allowed;
+    opacity: 0.7;
+    color: #666;
+  }
+  
+  .time-range span {
+    margin: 0 4px;
   }
   
   /* Switch 樣式 */
   .switch {
     position: relative;
     display: inline-block;
-    width: 60px;
-    height: 34px;
+    width: 50px;
+    height: 24px;
   }
   
   .switch input {
     opacity: 0;
     width: 0;
     height: 0;
+  }
+  
+  .switch input:disabled + .slider {
+    opacity: 0.7;
+    cursor: not-allowed;
+    background-color: #e0e0e0;
   }
   
   .slider {
@@ -115,14 +198,14 @@
     bottom: 0;
     background-color: #ccc;
     transition: .4s;
-    border-radius: 34px;
+    border-radius: 24px;
   }
   
   .slider:before {
     position: absolute;
     content: "";
-    height: 26px;
-    width: 26px;
+    height: 16px;
+    width: 16px;
     left: 4px;
     bottom: 4px;
     background-color: white;
@@ -134,6 +217,66 @@
     background-color: #2196F3;
   }
   
+  input:checked:disabled + .slider {
+    background-color: #90caf9;
+  }
+  
   input:checked + .slider:before {
     transform: translateX(26px);
+  }
+  
+  /* RWD 響應式設計 */
+  @media (max-width: 768px) {
+    .address-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .hour-item {
+      grid-template-columns: 60px 1fr 60px;
+    }
+    
+    .time-range {
+      flex-direction: row;
+      justify-content: space-between;
+    }
+    
+    .time-range input {
+      width: 45%;
+    }
+  
+    .action-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+  
+    .edit-button,
+    .save-button,
+    .cancel-button {
+      margin: 0;
+      width: 100%;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .store-container {
+      padding: 15px;
+    }
+  
+    h2 {
+      font-size: 20px;
+    }
+  
+    .hour-item {
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+    
+    .time-range {
+      width: 100%;
+    }
+  
+    .switch {
+      margin-top: 8px;
+    }
   }
