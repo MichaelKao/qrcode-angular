@@ -40,7 +40,6 @@ export class LoginComponent {
       this.http.post('http://localhost:8080/qrcode/user/login', this.loginForm.value).subscribe({
         next: (response: any) => {
           if (response.code === 200) {
-            this.snackBar.open('登入成功', '關閉', { duration: 3000 });
             localStorage.setItem('user', JSON.stringify(response.data));
             this.router.navigate(['/']); 
           } else {

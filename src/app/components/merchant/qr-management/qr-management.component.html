@@ -1,1 +1,40 @@
-<p>qr-management works!</p>
+<div class="page-container">
+    <h2 class="page-title">店家 QR Code 管理</h2>
+    
+    <div class="qr-codes-container">
+
+        <div class="header-section">
+          <button class="back-button" (click)="goBack()">
+            返回上一頁
+          </button>
+        </div>
+
+      <!-- 使用非空判斷運算子 -->
+      <div class="qr-code store-qr" *ngIf="qrCodes && qrCodes.length > 0">
+        <div class="qr-header">
+          <h3>商家主要 QR Code</h3>
+          <p>顧客掃描此 QR Code 可瀏覽完整菜單</p>
+        </div>
+        <div class="qr-image-container">
+          <img [src]="'data:image/png;base64,' + qrCodes[0].imageBase64" 
+               alt="商家 QR Code">
+        </div>
+      </div>
+  
+      <!-- 座位 QR Codes -->
+      <div class="seats-section" *ngIf="qrCodes && qrCodes.length > 1">
+        <h3>座位 QR Codes</h3>
+        <div class="seats-grid">
+          <div class="qr-code seat-qr" *ngFor="let qr of qrCodes.slice(1); let i = index">
+            <div class="qr-header">
+              <span class="seat-number">座位 {{i + 1}}</span>
+            </div>
+            <div class="qr-image-container">
+              <img [src]="'data:image/png;base64,' + qr.imageBase64" 
+                   [alt]="'座位 ' + (i + 1) + ' QR Code'">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -9,7 +9,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-
+import { Router } from '@angular/router';
 
 interface City {
   id: number;
@@ -52,7 +52,7 @@ export class DashboardComponent implements OnInit {
   districts: District[] = [];
   selectedDistricts: District[] = [];
 
-  constructor(private fb: FormBuilder, private http: HttpClient, private snackBar: MatSnackBar) {
+  constructor(private fb: FormBuilder, private http: HttpClient, private snackBar: MatSnackBar, private router: Router) {
     this.initForm();  
   }
 
@@ -572,36 +572,37 @@ export class DashboardComponent implements OnInit {
     if (this.storeForm.valid) {
 
       const formData = new FormData();
-
       const userData = JSON.parse(localStorage.getItem('user') ?? '{}');
-
-      const storeSeq = userData.seq;
-
-      formData.append('storeSeq', storeSeq);
-
-      // 添加营业时间数据
-      const businessHours = this.businessHoursForm.value;
-      formData.append('businessHours', JSON.stringify(businessHours));
-      // 將所有表單值添加到 FormData 中
-      Object.keys(this.storeForm.value).forEach(key => {
-        const value = this.storeForm.get(key)?.value;
-        if (key === 'businessHours') {
-          return; 
-        }
-        if (value instanceof File) {
-          formData.append(key, value, value.name); // 處理檔案
-        } else if (key !== 'logo') {
-          formData.append(key, value); // 处理其他字段
-        }
-      });
-
-      for (let pair of formData.entries()) {
-        console.log(pair[0] + ': ' + pair[1]);
+      
+      // 直接指定要傳送的欄位
+      formData.append('storeSeq', userData.seq);
+      formData.append('storeName', this.storeForm.get('storeName')?.value);
+      formData.append('description', this.storeForm.get('description')?.value);
+      formData.append('phone', this.storeForm.get('phone')?.value);
+      formData.append('email', this.storeForm.get('email')?.value);
+      formData.append('streetAddress', this.storeForm.get('streetAddress')?.value);
+      formData.append('seats', this.storeForm.get('seats')?.value);
+      formData.append('postCode', this.storeForm.get('postCode')?.value);
+      
+      // 處理城市和區域的中文名稱
+      const cityId = this.storeForm.get('city')?.value;
+      const districtId = this.storeForm.get('district')?.value;
+      formData.append('city', this.cities.find(c => c.id === cityId)?.name || '');
+      formData.append('district', this.districts.find(d => d.id === districtId)?.name || '');
+      
+      // 處理營業時間
+      formData.append('businessHours', JSON.stringify(this.businessHoursForm.value));
+      
+      // 處理 logo 檔案
+      const logo = this.storeForm.get('logo')?.value;
+      if (logo instanceof File) {
+        formData.append('logo', logo, logo.name);
       }
 
       this.http.post<any>('http://localhost:8080/qrcode/store/createStore', formData).subscribe({
         next: (response) => {
-          this.snackBar.open('登商店創建成功', '關閉', { duration: 3000 });
+          localStorage.setItem('user', JSON.stringify(response.data));
+          this.router.navigate(['/']);
         },
         error: () => {
           this.snackBar.open('創建商店時出現錯誤', '關閉', { duration: 3000 });
