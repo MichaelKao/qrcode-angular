@@ -139,6 +139,8 @@ export class DashboardComponent implements OnInit {
         } else {
           group.get('openTime')?.enable();
           group.get('closeTime')?.enable();
+          group.get('openTime')?.setValue('09:00');
+          group.get('closeTime')?.setValue('22:00');
         }
       });
   
