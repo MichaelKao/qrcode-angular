@@ -86,6 +86,8 @@ export class DashboardComponent implements OnInit {
       this.onDistrictChange(districtId);
     });
 
+    this.initializeBusinessHours();
+
   }
 
   onLogoSelected(event: any): void {
@@ -105,7 +107,7 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  private initializeBusinessHours() {
+  private initializeBusinessHours2() {
     const days = ['週一', '週二', '週三', '週四', '週五', '週六', '週日'];
     return days.map(day => {
       return this.fb.group({
@@ -114,6 +116,33 @@ export class DashboardComponent implements OnInit {
         openTime: ['09:00'],
         closeTime: ['22:00']
       });
+    });
+  }
+
+  private initializeBusinessHours() {
+    const days = ['週一', '週二', '週三', '週四', '週五', '週六', '週日'];
+    return days.map(day => {
+      const group = this.fb.group({
+        week: [day],
+        isOpen: [true],
+        openTime: ['09:00'],
+        closeTime: ['22:00']
+      });
+  
+      // 設定監聽器
+      group.get('isOpen')?.valueChanges.subscribe(isOpen => {
+        if (!isOpen) {
+          group.get('openTime')?.reset();
+          group.get('closeTime')?.reset();
+          group.get('openTime')?.disable();
+          group.get('closeTime')?.disable();
+        } else {
+          group.get('openTime')?.enable();
+          group.get('closeTime')?.enable();
+        }
+      });
+  
+      return group;
     });
   }
 

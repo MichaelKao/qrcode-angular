@@ -48,6 +48,21 @@ export class MenuManagementComponent implements OnInit {
 
   ngOnInit() {
     this.loadStoreData();
+
+    // 確保監聽所有 `isOpen` 欄位的變化
+  this.businessHourControls.forEach(control => {
+    const group = control as FormGroup;
+    group.get('isOpen')?.valueChanges.subscribe(isOpen => {
+      console.log("isOpen", isOpen);
+      if (!isOpen) {
+        group.get('openTime')?.reset({ value: null, disabled: true });
+        group.get('closeTime')?.reset({ value: null, disabled: true });
+      } else {
+        group.get('openTime')?.enable();
+        group.get('closeTime')?.enable();
+      }
+    });
+  });
   }
 
   loadStoreData() {
@@ -56,7 +71,6 @@ export class MenuManagementComponent implements OnInit {
 
       const userData = JSON.parse(localStorage.getItem('user') || '{}');
       const storeData = userData?.userStoreVo;
-      
       if (storeData) {
         this.storeForm.patchValue({
           storeName: storeData.storeName,
@@ -77,7 +91,8 @@ export class MenuManagementComponent implements OnInit {
           hoursArray.removeAt(0);
         }
         // 添加新的營業時間
-        storeData.businessHoursList.forEach((hour: BusinessHour) => {
+        console.log("loadStoreData--------->");
+       storeData.businessHoursList.forEach((hour: BusinessHour) => {
           hoursArray.push(this.fb.group({
             seq: [{value: hour.seq, disabled: !this.isEditing}],
             week: [{value: hour.week, disabled: !this.isEditing}],
@@ -85,7 +100,9 @@ export class MenuManagementComponent implements OnInit {
             openTime: [{value: hour.openTime, disabled: !this.isEditing}],
             closeTime: [{value: hour.closeTime, disabled: !this.isEditing}]
           }));
-        });
+          
+        }); 
+        
       }
 
     }
@@ -94,13 +111,20 @@ export class MenuManagementComponent implements OnInit {
 
   toggleEdit() {
     this.isEditing = !this.isEditing;
+    console.log("isEditing ===>", this.isEditing);
     const hoursArray = this.storeForm.get('businessHoursList') as FormArray;
     
     hoursArray.controls.forEach(control => {
-      if (this.isEditing) {
-        control.enable();
+      // const isOpenControl = control.get('isOpen');
+      if(this.isEditing){
+        control.get('isOpen')?.enable();
+      }
+      if (control.value.isOpen && this.isEditing) {
+        control.get('openTime')?.enable();
+        control.get('closeTime')?.enable();
       } else {
-        control.disable();
+        control.get('openTime')?.disable();
+        control.get('closeTime')?.disable();
       }
     });
 

@@ -117,12 +117,14 @@
               <div class="hour-item" [formGroupName]="i">
                 <span class="day">{{hour.get('week')?.value}}</span>
                 <div class="time-range">
-                  <input type="time" formControlName="openTime">
+                  <input type="time" formControlName="openTime"
+                  [disabled]="!hour.get('isOpen')?.value" >
                   <span>至</span>
                   <input type="time" formControlName="closeTime">
                 </div>
                 <label class="switch">
-                  <input type="checkbox" formControlName="isOpen">
+                  <input type="checkbox" formControlName="isOpen"
+                  [disabled]="!hour.get('isOpen')?.value" >
                   <span class="slider"></span>
                 </label>
               </div>

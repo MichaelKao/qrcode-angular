@@ -159,8 +159,8 @@
   }
   
   .time-range input:disabled {
-    background-color: #f5f5f5;
-    cursor: not-allowed;
+    background-color: #f5f5f5!; 
+    pointer-events: none;
     opacity: 0.7;
     color: #666;
   }
