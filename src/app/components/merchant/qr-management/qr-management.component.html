@@ -16,7 +16,7 @@
           <p>顧客掃描此 QR Code 可瀏覽完整菜單</p>
         </div>
         <div class="qr-image-container">
-          <img [src]="'data:image/png;base64,' + qrCodes[0].imageBase64" 
+          <img [src]="'data:image/png;base64,' + qrCodes[0].qrcode" 
                alt="商家 QR Code">
         </div>
       </div>
@@ -30,7 +30,7 @@
               <span class="seat-number">座位 {{i + 1}}</span>
             </div>
             <div class="qr-image-container">
-              <img [src]="'data:image/png;base64,' + qr.imageBase64" 
+              <img [src]="'data:image/png;base64,' + qr.qrcode" 
                    [alt]="'座位 ' + (i + 1) + ' QR Code'">
             </div>
           </div>

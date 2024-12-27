@@ -18,9 +18,14 @@
             <button *ngIf="isLoggedIn" mat-raised-button color="warn" (click)="logout()">登出</button>
           </div>
       </div>
-      <div class="hero-image">
+      <div class="hero-image" *ngIf="!(qrCodes && qrCodes.length > 0)">
         <img src="assets/images/hero-image.svg" alt="點餐示意圖">
       </div>
+      <div class="hero-image" *ngIf="qrCodes && qrCodes.length > 0">
+        <img [src]="'data:image/png;base64,' + qrCodes[0].qrcode" 
+               alt="商家 QR Code">
+      </div>
+
     </section>
   
     <!-- 使用說明 -->

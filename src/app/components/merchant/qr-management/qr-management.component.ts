@@ -32,15 +32,7 @@ export class QrManagementComponent implements OnInit {
     if (typeof window !== 'undefined') {
       const userData = JSON.parse(localStorage.getItem('user') ?? '{}');
       if (userData?.userStoreVo?.storeSeq) {
-        this.http.get<any>(`http://localhost:8080/qrcode/store/getStoreQRCode/${userData.userStoreVo.storeSeq}`)
-          .subscribe({
-            next: (response) => {
-              this.qrCodes = response;
-            },
-            error: (error) => {
-              console.error('Error fetching QR codes:', error);
-            }
-          });
+        this.qrCodes = userData.userStoreVo.qrCodeVoList;
       }
     }
   }

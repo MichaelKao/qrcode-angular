@@ -29,6 +29,8 @@ export class HomeComponent implements OnInit {
 
   storeData: any = null;
 
+  qrCodes: any[] = [];
+
 
   ngOnInit(): void {
     // 初始檢查
@@ -56,6 +58,10 @@ export class HomeComponent implements OnInit {
         this.storeData = null;
       }
 
+      if (userData?.userStoreVo?.storeSeq) {
+        this.qrCodes = userData.userStoreVo.qrCodeVoList;
+      }
+
     }
   }
 
@@ -67,6 +73,7 @@ export class HomeComponent implements OnInit {
     this.isLoggedIn = false;
     this.hasStore = false;
     this.storeData = null;
+    this.qrCodes = [];
   }
 
   navigateToMerchantDashboard() {
