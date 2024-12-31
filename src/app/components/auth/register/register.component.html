@@ -36,8 +36,8 @@
           <!-- 驗證碼欄位 -->
           <mat-form-field appearance="outline" class="form-field">
             <mat-label>驗證碼</mat-label>
-            <input matInput formControlName="verificationCode" placeholder="請輸入驗證碼" [disabled]="isVerificationCodeSent">
-            <mat-error *ngIf="registerForm.get('verificationCode')?.hasError('required')">
+            <input matInput formControlName="code" placeholder="請輸入驗證碼">
+            <mat-error *ngIf="registerForm.get('code')?.hasError('required')">
               驗證碼不能為空
             </mat-error>
           </mat-form-field>

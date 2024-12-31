@@ -10,6 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { timer } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { ApiService } from '../../../services/api.service';
 
 @Component({
   selector: 'app-register',
@@ -33,12 +34,12 @@ export class RegisterComponent {
   timeRemaining = 0; // 倒計時秒數
 
 
-  constructor(private fb: FormBuilder, private http: HttpClient, private snackBar: MatSnackBar, private router: Router, private location: Location) {
+  constructor(private fb: FormBuilder, private http: HttpClient, private snackBar: MatSnackBar, private router: Router, private location: Location, private apiService: ApiService) {
     this.registerForm = this.fb.group({
       account: ['', Validators.required],
       password: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      verificationCode: ['', Validators.required]
+      code: ['', Validators.required]
     });
   }
 
@@ -67,10 +68,8 @@ export class RegisterComponent {
         }
       });
 
-      const url = `http://localhost:8080/qrcode/verification/send/${encodeURIComponent(email)}`;
-
       setTimeout(() => {
-        this.http.get(url)
+        this.apiService.sendVerification(email)
         .subscribe({
           next: (response) => {
             alert('驗證碼已發送');
@@ -86,15 +85,19 @@ export class RegisterComponent {
 
   onSubmit() {
     if (this.registerForm.valid) {
-      this.http.post('http://localhost:8080/qrcode/user/signIn', this.registerForm.value)
-        .subscribe({
-          next: (response: any) => {
+
+      this.apiService.signIn(this.registerForm.value).subscribe({
+        next: (response: any) => {
+          if (response.code === 200) { 
             localStorage.setItem('user', JSON.stringify(response.data));
             // 註冊成功，跳轉到 home 頁面
             this.router.navigate(['/']);
-          },
-          error: (err) => alert('註冊失敗，請重試!')
-        });
+          } else {
+            alert(response.code + ':' + response.message)
+          } 
+        },
+        error: (err) => alert(err)
+      });
     }
   }
 

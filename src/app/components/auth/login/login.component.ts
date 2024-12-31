@@ -9,6 +9,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { ApiService } from '../../../services/api.service';
 
 @Component({
   selector: 'app-login',
@@ -28,7 +29,7 @@ import { MatButtonModule } from '@angular/material/button';
 export class LoginComponent {
   loginForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private http: HttpClient, private snackBar: MatSnackBar, private router: Router, private location: Location) {
+  constructor(private fb: FormBuilder, private http: HttpClient, private snackBar: MatSnackBar, private router: Router, private location: Location, private apiService: ApiService) {
     this.loginForm = this.fb.group({
       account: ['', Validators.required],
       password: ['', Validators.required],
@@ -37,13 +38,14 @@ export class LoginComponent {
 
   onSubmit(): void {
     if (this.loginForm.valid) {
-      this.http.post('http://localhost:8080/qrcode/user/login', this.loginForm.value).subscribe({
+
+      this.apiService.login(this.loginForm.value).subscribe({
         next: (response: any) => {
           if (response.code === 200) {
             localStorage.setItem('user', JSON.stringify(response.data));
             this.router.navigate(['/']); 
           } else {
-            this.snackBar.open('登入失敗，請檢查帳號或密碼', '關閉', { duration: 3000 });
+            this.snackBar.open(response.code + ':' + response.message, '關閉', { duration: 3000 });
           }
           
         },

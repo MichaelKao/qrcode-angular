@@ -9,6 +9,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { ApiService } from '../../../services/api.service';
 
 @Component({
   selector: 'app-forgot-password',
@@ -27,7 +28,7 @@ import { MatButtonModule } from '@angular/material/button';
 export class ForgotPasswordComponent {
   forgotPasswordForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private http: HttpClient, private snackBar: MatSnackBar, private router: Router, private location: Location) {
+  constructor(private fb: FormBuilder, private http: HttpClient, private snackBar: MatSnackBar, private router: Router, private location: Location, private apiService: ApiService) {
     this.forgotPasswordForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
     });
@@ -43,16 +44,21 @@ export class ForgotPasswordComponent {
         return;
       }
       
+      
       const url = `http://localhost:8080/qrcode/user/forgetPassword/${encodeURIComponent(email)}`;
 
-      this.http.get(url)
+      this.apiService.forgetPassword(email)
         .subscribe({
         next: (response: any) => {
-          this.snackBar.open('密码重置链接已发送到您的电子邮件', '关闭', { duration: 3000 });
+          if (response.code === 200) {
+            this.snackBar.open('密码重置链接已发送到您的电子邮件', '关闭', { duration: 3000 });
           this.router.navigate(['/login']); 
+          } else {
+            this.snackBar.open(response.code + ':' + response.message, '关闭', { duration: 3000 });
+          }   
         },
         error: (err) => {
-          this.snackBar.open('发送失败，请检查电子邮件地址', '关闭', { duration: 3000 });
+          
         }
       });
     } else {
