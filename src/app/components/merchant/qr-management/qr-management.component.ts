@@ -16,14 +16,14 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
     MatCardModule,
     MatButtonModule,
     RouterModule,
-    HttpClientModule, 
+    HttpClientModule,
   ]
 })
 export class QrManagementComponent implements OnInit {
 
   qrCodes: any[] = [];
 
-  constructor( private http: HttpClient, private location: Location) {
+  constructor(private http: HttpClient, private location: Location) {
 
   }
 

@@ -30,10 +30,10 @@ interface District {
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
-  standalone: true, 
+  standalone: true,
   imports: [
     CommonModule,
-    ReactiveFormsModule,    
+    ReactiveFormsModule,
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
@@ -46,16 +46,16 @@ interface District {
 
 export class DashboardComponent implements OnInit {
 
-  storeForm!: FormGroup;  
+  storeForm!: FormGroup;
   businessHoursForm!: FormArray;
-  selectedFileName: string | null = null;
-  
+
+
   cities: City[] = [];
   districts: District[] = [];
   selectedDistricts: District[] = [];
 
   constructor(private fb: FormBuilder, private http: HttpClient, private snackBar: MatSnackBar, private router: Router, private location: Location, private locationService: LocationService, private apiService: ApiService) {
-    this.initForm();  
+    this.initForm();
   }
 
   private initForm() {
@@ -69,16 +69,15 @@ export class DashboardComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       city: ['', Validators.required],
       district: ['', Validators.required],
-      postCode: [{value: '', disabled: true}],
+      postCode: [{ value: '', disabled: true }],
       streetAddress: ['', Validators.required],
       seats: [0, [Validators.required, Validators.min(0)]],
-      businessHours: this.businessHoursForm,
-      logo: [null]
+      businessHours: this.businessHoursForm
     });
   }
 
   ngOnInit() {
-  
+
     this.storeForm.get('city')?.valueChanges.subscribe(cityId => {
       this.onCityChange(cityId);
     });
@@ -93,23 +92,6 @@ export class DashboardComponent implements OnInit {
     this.districts = this.locationService.getDistricts();
   }
 
-  onLogoSelected(event: any): void {
-
-    const inputElement = event.target as HTMLInputElement;
-  
-    if (inputElement && inputElement.files) {
-      const file = inputElement.files[0];
-      if (file) {
-        this.selectedFileName = file.name; 
-        this.storeForm.get('logo')?.setValue(file); 
-      } else {
-        this.selectedFileName = null; 
-      }
-    } else {
-      this.selectedFileName = null; 
-    }
-  }
-
   private initializeBusinessHours() {
     const days = ['週一', '週二', '週三', '週四', '週五', '週六', '週日'];
     return days.map(day => {
@@ -119,7 +101,7 @@ export class DashboardComponent implements OnInit {
         openTime: ['09:00'],
         closeTime: ['22:00']
       });
-  
+
       // 設定監聽器
       group.get('isOpen')?.valueChanges.subscribe(isOpen => {
         if (!isOpen) {
@@ -134,7 +116,7 @@ export class DashboardComponent implements OnInit {
           group.get('closeTime')?.setValue('22:00');
         }
       });
-  
+
       return group;
     });
   }
@@ -164,10 +146,10 @@ export class DashboardComponent implements OnInit {
   updatePostCode() {
     const cityId = this.storeForm.get('city')?.value;
     const districtId = this.storeForm.get('district')?.value;
-    
+
     if (cityId) {
       const city = this.cities.find(c => c.id === cityId);
-      
+
       // 根據選擇的城市和區域來設置郵遞區號
       if (city) {
         if (districtId) {
@@ -187,7 +169,7 @@ export class DashboardComponent implements OnInit {
 
       const formData = new FormData();
       const userData = JSON.parse(localStorage.getItem('user') ?? '{}');
-      
+
       // 直接指定要傳送的欄位
       formData.append('storeSeq', userData.seq);
       formData.append('storeName', this.storeForm.get('storeName')?.value);
@@ -197,21 +179,15 @@ export class DashboardComponent implements OnInit {
       formData.append('streetAddress', this.storeForm.get('streetAddress')?.value);
       formData.append('seats', this.storeForm.get('seats')?.value);
       formData.append('postCode', this.storeForm.get('postCode')?.value);
-      
+
       // 處理城市和區域的中文名稱
       const cityId = this.storeForm.get('city')?.value;
       const districtId = this.storeForm.get('district')?.value;
       formData.append('city', this.cities.find(c => c.id === cityId)?.name || '');
       formData.append('district', this.districts.find(d => d.id === districtId)?.name || '');
-      
+
       // 處理營業時間
       formData.append('businessHours', JSON.stringify(this.businessHoursForm.value));
-      
-      // 處理 logo 檔案
-      const logo = this.storeForm.get('logo')?.value;
-      if (logo instanceof File) {
-        formData.append('logo', logo, logo.name);
-      }
 
       this.apiService.createStore(formData).subscribe({
         next: (response) => {
@@ -220,7 +196,7 @@ export class DashboardComponent implements OnInit {
             this.router.navigate(['/']);
           } else {
             this.snackBar.open(response.code + ':' + response.message, '關閉', { duration: 3000 });
-          }       
+          }
         },
         error: () => {
           this.snackBar.open('創建商店時出現錯誤', '關閉', { duration: 3000 });

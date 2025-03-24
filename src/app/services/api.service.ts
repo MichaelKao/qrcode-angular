@@ -38,4 +38,24 @@ export class ApiService {
     return this.http.get(`${this.baseUrl}/user/forgetPassword/${encodeURIComponent(email)}`);
   }
 
+  createProduct(formData: FormData): Observable<any> {
+    return this.http.post(`${this.baseUrl}/store/createProduct`, formData);
+  }
+
+  updateProduct(formData: FormData): Observable<any> {
+    return this.http.put(`${this.baseUrl}/store/updateProduct`, formData);
+  }
+
+  deleteProduct(seq: number): Observable<any> {
+    return this.http.delete<any>(`${this.baseUrl}/store/deleteProduct/${seq}`);
+  }
+
+  showShop(userId: number): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/order/getShopInfo/${userId}`);
+  }
+  
+  getOrderInfo(storeId: number): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/order/getOrderInfo/${storeId}`);
+  }
+
 }

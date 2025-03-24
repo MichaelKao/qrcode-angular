@@ -18,7 +18,7 @@ import { ApiService } from '../../../services/api.service';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    HttpClientModule, 
+    HttpClientModule,
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
@@ -43,31 +43,31 @@ export class ForgotPasswordComponent {
         this.snackBar.open('請輸入有效的電子郵件地址', '關閉', { duration: 3000 });
         return;
       }
-      
-      
+
+
       const url = `http://localhost:8080/qrcode/user/forgetPassword/${encodeURIComponent(email)}`;
 
       this.apiService.forgetPassword(email)
         .subscribe({
-        next: (response: any) => {
-          if (response.code === 200) {
-            this.snackBar.open('密码重置链接已发送到您的电子邮件', '关闭', { duration: 3000 });
-          this.router.navigate(['/login']); 
-          } else {
-            this.snackBar.open(response.code + ':' + response.message, '关闭', { duration: 3000 });
-          }   
-        },
-        error: (err) => {
-          
-        }
-      });
+          next: (response: any) => {
+            if (response.code === 200) {
+              this.snackBar.open('密码重置链接已发送到您的电子邮件', '关闭', { duration: 3000 });
+              this.router.navigate(['/login']);
+            } else {
+              this.snackBar.open(response.code + ':' + response.message, '关闭', { duration: 3000 });
+            }
+          },
+          error: (err) => {
+
+          }
+        });
     } else {
       this.snackBar.open('请输入有效的电子邮件地址', '关闭', { duration: 3000 });
     }
   }
 
   goBack(): void {
-    this.location.back(); 
+    this.location.back();
   }
 
 }

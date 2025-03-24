@@ -5,27 +5,12 @@
       返回上一頁
     </button>
   </div>
-  
+
   <form [formGroup]="storeForm" (ngSubmit)="onSubmit()">
     <mat-card>
       <mat-card-header>
         <mat-card-title>商店資訊設定</mat-card-title>
       </mat-card-header>
-      
-      <div class="file-upload-container">
-        <!-- 自定义按钮触发文件选择 -->
-        <button mat-raised-button class="file-upload-button" (click)="fileInput.click()">選擇Logo</button>
-        <!-- 隐藏的文件输入框 -->
-        <input type="file" id="logo-upload" #fileInput (change)="onLogoSelected($event)" class="file-upload-input" />
-        <!-- 显示选择的文件名 -->
-        <div *ngIf="selectedFileName" class="file-name">
-          <p>選擇的文件: {{ selectedFileName }}</p>
-        </div>
-        <!-- 错误提示 -->
-        <mat-error *ngIf="storeForm.get('logo')?.errors?.['required']">
-          請上傳Logo
-        </mat-error>
-      </div>
 
       <mat-card-content>
         <!-- 基本資訊 -->
@@ -69,7 +54,7 @@
         <!-- 地址資訊 -->
         <div class="form-section address-section">
           <div class="address-grid">
-            
+
             <mat-form-field>
               <mat-label>郵遞區號</mat-label>
               <input matInput formControlName="postCode" readonly>
@@ -117,14 +102,12 @@
               <div class="hour-item" [formGroupName]="i">
                 <span class="day">{{hour.get('week')?.value}}</span>
                 <div class="time-range">
-                  <input type="time" formControlName="openTime"
-                  [disabled]="!hour.get('isOpen')?.value" >
+                  <input type="time" formControlName="openTime" [disabled]="!hour.get('isOpen')?.value">
                   <span>至</span>
                   <input type="time" formControlName="closeTime">
                 </div>
                 <label class="switch">
-                  <input type="checkbox" formControlName="isOpen"
-                  [disabled]="!hour.get('isOpen')?.value" >
+                  <input type="checkbox" formControlName="isOpen" [disabled]="!hour.get('isOpen')?.value">
                   <span class="slider"></span>
                 </label>
               </div>
@@ -148,10 +131,7 @@
       </mat-card-content>
 
       <mat-card-actions>
-        <button mat-raised-button
-                color="primary" 
-                type="submit" 
-                [disabled]="!storeForm.valid || storeForm.pristine">
+        <button mat-raised-button color="primary" type="submit" [disabled]="!storeForm.valid || storeForm.pristine">
           儲存設定
         </button>
       </mat-card-actions>

@@ -19,13 +19,17 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private router: Router, private snackBar: MatSnackBar) {}
+  constructor(private router: Router, private snackBar: MatSnackBar) { }
 
   account: string | null = '';
 
   isLoggedIn: boolean = false;
-  
+
   hasStore: boolean = false;
+
+  hasStoreData: boolean = false;
+
+  hasProductData: boolean = false;
 
   storeData: any = null;
 
@@ -47,19 +51,30 @@ export class HomeComponent implements OnInit {
     // 確保 localStorage 可用
     if (typeof localStorage !== 'undefined') {
       const userData = JSON.parse(localStorage.getItem('user') ?? '{}');
-      this.account =  userData.account
-      this.isLoggedIn = !!this.account;
 
-      if (userData?.userStoreVo) {
-        this.hasStore = true;
-        this.storeData = userData.userStoreVo;
-      } else {
-        this.hasStore = false;
-        this.storeData = null;
-      }
+      if (userData != null) {
+        this.account = userData.account
+        this.isLoggedIn = !!this.account;
 
-      if (userData?.userStoreVo?.storeSeq) {
-        this.qrCodes = userData.userStoreVo.qrCodeVoList;
+        if (userData?.userStoreVo) {
+          this.hasStore = true;
+          this.hasStoreData = true;
+          this.storeData = userData.userStoreVo;
+        } else {
+          this.hasStore = false;
+          this.hasStoreData = false;
+          this.storeData = null;
+        }
+
+        if (userData?.userStoreVo?.userProductVoList.length > 0) {
+          this.hasProductData = true;
+        } else {
+          this.hasProductData = false;
+        }
+
+        if (userData?.userStoreVo?.storeSeq) {
+          this.qrCodes = userData.userStoreVo.qrCodeVoList;
+        }
       }
 
     }
@@ -67,7 +82,7 @@ export class HomeComponent implements OnInit {
 
   logout(): void {
     if (typeof localStorage !== 'undefined') {
-      localStorage.removeItem('user'); 
+      localStorage.removeItem('user');
     }
     this.account = null;
     this.isLoggedIn = false;
@@ -85,7 +100,7 @@ export class HomeComponent implements OnInit {
     } else {
       this.snackBar.open('請先登入', '關閉', { duration: 3000 });
     }
-    
+
   }
 
   editStore() {
@@ -97,13 +112,100 @@ export class HomeComponent implements OnInit {
     this.router.navigate(['/merchant/menu-management']);
   }
 
-  viewStore() {
+  viewQrcode() {
     if (!this.isLoggedIn) {
       this.snackBar.open('請先登入', '關閉', { duration: 3000 });
       return;
     }
     // 導向編輯商店頁面
     this.router.navigate(['/merchant/qr-management']);
+  }
+
+  editProduct() {
+    if (!this.isLoggedIn) {
+      this.snackBar.open('請先登入', '關閉', { duration: 3000 });
+      return;
+    }
+    // 導向設置菜單頁面
+    this.router.navigate(['/merchant/product-management']);
+  }
+
+  viewUser() {
+    if (!this.isLoggedIn) {
+      this.snackBar.open('請先登入', '關閉', { duration: 3000 });
+      return;
+    }
+
+    this.router.navigate(['/merchant/shop']);
+  }
+
+  viewQrder() {
+    if (!this.isLoggedIn) {
+      this.snackBar.open('請先登入', '關閉', { duration: 3000 });
+      return;
+    }
+
+    this.router.navigate(['/order/order-notification']);
+  }
+
+  handleCardClick(type: string) {
+    if (!this.isLoggedIn) {
+      this.snackBar.open('請先登入', '關閉', { duration: 3000 });
+      this.router.navigate(['/auth/login']);
+      return;
+    }
+
+    switch (type) {
+      case 'register':
+        if (this.hasStore) {
+          this.snackBar.open('已經註冊過商店', '關閉', { duration: 3000 });
+          return;
+        }
+        this.navigateToMerchantDashboard();
+        break;
+
+      case 'qrcode':
+        if (!this.hasStore) {
+          this.snackBar.open('請先註冊商店', '關閉', { duration: 3000 });
+          return;
+        }
+        this.viewQrcode();
+        break;
+
+      case 'store':
+        if (!this.hasStore) {
+          this.snackBar.open('請先註冊商店', '關閉', { duration: 3000 });
+          return;
+        }
+        this.editStore();
+        break;
+
+      case 'product':
+        if (!this.hasStoreData) {
+          this.snackBar.open('請先註冊商店', '關閉', { duration: 3000 });
+          return;
+        }
+        this.editProduct();
+        break;
+
+      case 'shop':
+        // 檢查是否有商品資料
+        if (!this.hasProductData) {
+          this.snackBar.open('請先設置菜單', '關閉', { duration: 3000 });
+          return;
+        }
+        this.viewUser();
+        break;
+
+      case 'order':
+        // 檢查是否有商品資料
+        if (!this.hasProductData) {
+          this.snackBar.open('請先設置菜單', '關閉', { duration: 3000 });
+          return;
+        }
+        this.viewQrder();
+        break;
+    }
   }
 
 }

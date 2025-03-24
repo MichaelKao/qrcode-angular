@@ -50,12 +50,16 @@ mat-card-title {
 
 .button-group {
   display: flex;
-  justify-content: space-between; /* 確保按鈕水平排列 */
-  gap: 16px; /* 添加按鈕間距 */
+  justify-content: space-between;
+  /* 確保按鈕水平排列 */
+  gap: 16px;
+  /* 添加按鈕間距 */
   margin-top: 20px;
 }
 
 button {
-  min-width: 140px; /* 保證按鈕寬度一致 */
-  height: 40px; /* 保證按鈕高度一致 */
+  min-width: 140px;
+  /* 保證按鈕寬度一致 */
+  height: 40px;
+  /* 保證按鈕高度一致 */
 }

@@ -1,109 +1,116 @@
 <div class="container">
-    <!-- Hero Section -->
-    <section class="hero">
-      <div class="hero-content">
-        <h1 class="hero-title">智慧點餐系統</h1>
-        <p class="hero-subtitle">輕鬆掃碼，立即點餐</p>
-        <div *ngIf="account">
-            <p>歡迎，{{ account }}!</p> <!-- 顯示使用者帳號 -->
-          </div>
-          <div class="auth-buttons">
-            <!-- 當 account 為空時，顯示登入與註冊按鈕 -->
-            <div *ngIf="!isLoggedIn">
-              <button mat-raised-button color="primary" routerLink="/auth/login">登入</button>
-              <button mat-stroked-button routerLink="/auth/register">註冊</button>
-            </div>
-          
-            <!-- 當 account 有值時，顯示登出按鈕 -->
-            <button *ngIf="isLoggedIn" mat-raised-button color="warn" (click)="logout()">登出</button>
-          </div>
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1 class="hero-title">智慧點餐系統</h1>
+      <p class="hero-subtitle">輕鬆掃碼，立即點餐</p>
+      <div *ngIf="account">
+        <p>歡迎，{{ account }}!</p> <!-- 顯示使用者帳號 -->
       </div>
-      <div class="hero-image" *ngIf="!(qrCodes && qrCodes.length > 0)">
-        <img src="assets/images/hero-image.svg" alt="點餐示意圖">
+      <div class="auth-buttons">
+        <!-- 當 account 為空時，顯示登入與註冊按鈕 -->
+        <div *ngIf="!isLoggedIn">
+          <button mat-raised-button color="primary" routerLink="/auth/login">登入</button>
+          <button mat-stroked-button routerLink="/auth/register">註冊</button>
+        </div>
+
+        <!-- 當 account 有值時，顯示登出按鈕 -->
+        <button *ngIf="isLoggedIn" mat-raised-button color="warn" (click)="logout()">登出</button>
       </div>
-      <div class="hero-image" *ngIf="qrCodes && qrCodes.length > 0">
-        <img [src]="'data:image/png;base64,' + qrCodes[0].qrcode" 
-               alt="商家 QR Code">
-      </div>
+    </div>
+    <div class="hero-image" *ngIf="!(qrCodes && qrCodes.length > 0)">
+      <img src="assets/images/hero-image.svg" alt="點餐示意圖">
+    </div>
+    <div class="hero-image" *ngIf="qrCodes && qrCodes.length > 0">
+      <img [src]="'data:image/png;base64,' + qrCodes[0].qrcode" alt="商家 QR Code">
+    </div>
 
-    </section>
-  
-    <!-- 使用說明 -->
-    <section class="how-to-use">
-      <h2>如何使用</h2>
-      <div class="features-grid">
+  </section>
 
-        <ng-container *ngIf="!hasStore">
-          <mat-card class="feature-card" (click)="navigateToMerchantDashboard()">
-            <mat-card-header>
-              <mat-card-title>商家註冊</mat-card-title>
-            </mat-card-header>
-            <mat-card-content>
-              <p>簡單註冊，獲取專屬店家QR Code</p>
-            </mat-card-content>
-          </mat-card>
-        </ng-container>
+  <!-- 使用說明 -->
+  <section class="how-to-use">
+    <h2>如何使用</h2>
+    <div class="features-grid">
+      <!-- 商家註冊卡片 -->
+      <mat-card class="feature-card" (click)="handleCardClick('register')">
+        <mat-card-header>
+          <mat-card-title>商家註冊</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>簡單註冊，獲取專屬店家QR Code</p>
+        </mat-card-content>
+      </mat-card>
 
-        <ng-container *ngIf="hasStore">
+      <!-- 查看QR Code卡片 -->
+      <mat-card class="feature-card" (click)="handleCardClick('qrcode')">
+        <mat-card-header>
+          <mat-card-title>查看專屬qrcode</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>查看商店專屬qrcode</p>
+        </mat-card-content>
+      </mat-card>
 
-          <mat-card class="feature-card" (click)="viewStore()">
-            <mat-card-header>
-              <mat-card-title>查看專屬qrcode</mat-card-title>
-            </mat-card-header>
-            <mat-card-content>
-              <p>查看商店專屬qrcode</p>
-            </mat-card-content>
-          </mat-card>
+      <!-- 編輯商店卡片 -->
+      <mat-card class="feature-card" (click)="handleCardClick('store')">
+        <mat-card-header>
+          <mat-card-title>編輯商店</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>管理商店資訊與設置</p>
+        </mat-card-content>
+      </mat-card>
 
-          <!-- 編輯商店卡片 -->
-          <mat-card class="feature-card" (click)="editStore()">
-            <mat-card-header>
-              <mat-card-title>查看/編輯商店</mat-card-title>
-            </mat-card-header>
-            <mat-card-content>
-              <p>管理商店資訊與設置</p>
-            </mat-card-content>
-          </mat-card>
-        </ng-container>
+      <!-- 設置菜單卡片 -->
+      <mat-card class="feature-card" (click)="handleCardClick('product')">
+        <mat-card-header>
+          <mat-card-title>設置菜單</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>輕鬆上傳菜品，管理價格與分類</p>
+        </mat-card-content>
+      </mat-card>
 
-        <mat-card class="feature-card">
-          <mat-card-header>
-            <mat-card-title>設置菜單</mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            <p>輕鬆上傳菜品，管理價格與分類</p>
-          </mat-card-content>
-        </mat-card>
-  
-        <mat-card class="feature-card">
-          <mat-card-header>
-            <mat-card-title>顧客點餐</mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            <p>掃碼點餐，快速便捷</p>
-          </mat-card-content>
-        </mat-card>
-      </div>
-    </section>  
+      <!-- 查看點餐畫面卡片 -->
+      <mat-card class="feature-card" (click)="handleCardClick('shop')">
+        <mat-card-header>
+          <mat-card-title>查看點餐畫面</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>查看你所創立的商店與商品介面</p>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- 訂單通知卡片 -->
+      <mat-card class="feature-card" (click)="handleCardClick('order')">
+        <mat-card-header>
+          <mat-card-title>訂單通知</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>輕鬆接單，提高效率</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </section>
 
 </div>
 
 <footer class="footer">
-    <div class="footer-content">
-      <div class="contact-info">
-        <h3>聯絡我們</h3>
-        <p>電話: (02) 1234-5678</p>
-        <p>信箱: info&#64;smartorder.com</p>
-        <p>地址: 台北市中正區重慶南路一段122號</p>
-      </div>
-      <div class="social-media">
-        <h3>追蹤我們</h3>
-        <a href="#">Facebook</a>
-        <a href="#">Instagram</a>
-        <a href="#">Twitter</a>
-      </div>
+  <div class="footer-content">
+    <div class="contact-info">
+      <h3>聯絡我們</h3>
+      <p>電話: 0909095118</p>
+      <p>信箱: g0909095118&#64;gmail.com</p>
+      <p>地址: 新北市新店區北新路2段29巷1弄</p>
     </div>
-    <div class="footer-bottom">
-      <p>&copy; 2023 智慧點餐系統. All rights reserved.</p>
+    <div class="social-media">
+      <h3>追蹤我們</h3>
+      <a href="#">Facebook</a>
+      <a href="#">Instagram</a>
+      <a href="#">Twitter</a>
     </div>
-  </footer>  
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2023 智慧點餐系統. All rights reserved.</p>
+  </div>
+</footer>

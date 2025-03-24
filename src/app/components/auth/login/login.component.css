@@ -1,51 +1,55 @@
 .login-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    padding: 20px;
-    background-color: #f5f5f5;
-  }
-  
-  mat-card {
-    max-width: 400px;
-    width: 100%;
-  }
-  
-  mat-card-header {
-    justify-content: center;
-    margin-bottom: 20px;
-  }
-  
-  mat-form-field {
-    width: 100%;
-    margin-bottom: 16px;
-  }
-  
-  form {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  mat-card-title {
-    font-size: 24px;
-    text-align: center;
-  }
-  
-  .button-group {
-    display: flex;
-    justify-content: space-between; /* 水平分配空間 */
-    gap: 16px; /* 控制按鈕間距 */
-    margin-top: 20px;
-  }
-  
-  button {
-    min-width: 140px; /* 控制按鈕寬度一致 */
-    height: 40px; /* 控制按鈕高度一致 */
-  }
-  
-  button:disabled {
-    background-color: #ccc; /* 禁用按鈕的背景色 */
-    color: #fff;
-  }
-  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  background-color: #f5f5f5;
+}
+
+mat-card {
+  max-width: 400px;
+  width: 100%;
+}
+
+mat-card-header {
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+mat-form-field {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+mat-card-title {
+  font-size: 24px;
+  text-align: center;
+}
+
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  /* 水平分配空間 */
+  gap: 16px;
+  /* 控制按鈕間距 */
+  margin-top: 20px;
+}
+
+button {
+  min-width: 140px;
+  /* 控制按鈕寬度一致 */
+  height: 40px;
+  /* 控制按鈕高度一致 */
+}
+
+button:disabled {
+  background-color: #ccc;
+  /* 禁用按鈕的背景色 */
+  color: #fff;
+}

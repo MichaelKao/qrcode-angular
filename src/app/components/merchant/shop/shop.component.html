@@ -1,0 +1,114 @@
+<div class="ordering-container">
+    <button class="back-button" (click)="goBack()">
+        返回
+    </button>
+    <!-- 店家資訊 -->
+    <div *ngIf="store" class="store-info">
+        <div class="store-header">
+            <img [src]="store.logo || 'assets/images/hero-image.svg'" alt="店家Logo" class="store-logo">
+            <div class="store-details">
+                <h2>{{ store.storeName }}</h2>
+                <p>
+                    地址：{{ store.city }} {{ store.district }} {{ store.streetAddress }}
+                    ({{ store.postCode }})
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 商品列表 -->
+    <div class="product-grid">
+        <div *ngFor="let product of products" class="product-card">
+            <img *ngIf="product.picture" [src]="product.picture" [alt]="product.productName" class="product-image">
+            <div class="product-info">
+                <h3>{{ product.productName }}</h3>
+                <p class="product-price">${{ product.productPrice }}</p>
+                <p class="product-description">{{ product.description }}</p>
+
+                <!-- 特殊選項 -->
+                <div *ngIf="product.spicy || product.coriander || product.vinegar" class="product-options">
+                    <!-- 辣度選擇 -->
+                    <div *ngIf="product.spicy" class="spicy-options">
+                        <label>辣度選擇</label>
+                        <div class="option-buttons">
+                            <button *ngFor="let level of ['none', 'small', 'medium', 'large']"
+                                (click)="updateSpicyLevel(level)">
+                                {{
+                                level === 'none' ? '無' :
+                                level === 'small' ? '小' :
+                                level === 'medium' ? '中' : '大'
+                                }}
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 香菜選擇 -->
+                    <div *ngIf="product.coriander" class="coriander-options">
+                        <label>是否需要香菜</label>
+                        <div class="option-buttons">
+                            <button (click)="updateCoriander(false)">不要</button>
+                            <button (click)="updateCoriander(true)">要</button>
+                        </div>
+                    </div>
+
+                    <!-- 醋選擇 -->
+                    <div *ngIf="product.vinegar" class="vinegar-options">
+                        <label>是否需要醋</label>
+                        <div class="option-buttons">
+                            <button (click)="updateVinegar(false)">不要</button>
+                            <button (click)="updateVinegar(true)">要</button>
+                        </div>
+                    </div>
+                </div>
+                <button class="add-to-cart-button" (click)="addToCart(product)">
+                    加入購物車
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 購物車 -->
+    <div class="cart-section">
+        <h3>購物車</h3>
+        <div *ngIf="cart.length === 0" class="empty-cart">
+            購物車目前是空的
+        </div>
+        <div *ngIf="cart.length > 0" class="cart-items">
+            <div *ngFor="let item of cart; let i = index" class="cart-item">
+                <img *ngIf="item.product.picture" [src]="item.product.picture" [alt]="item.product.productName"
+                    class="cart-item-image">
+                <div class="cart-item-details">
+                    <h4>{{ item.product.productName }}</h4>
+                    <p>單價：${{ item.product.productPrice }}</p>
+
+                    <!-- 顯示已選擇的特殊選項 -->
+                    <div *ngIf="item.spicyLevel" class="cart-item-option">
+                        辣度：{{ item.spicyLevel }}
+                    </div>
+                    <div *ngIf="item.wantsCoriander !== undefined" class="cart-item-option">
+                        香菜：{{ item.wantsCoriander ? '要' : '不要' }}
+                    </div>
+                    <div *ngIf="item.wantsVinegar !== undefined" class="cart-item-option">
+                        醋：{{ item.wantsVinegar ? '要' : '不要' }}
+                    </div>
+
+                    <div class="quantity-control">
+                        <button (click)="item.quantity = Math.max(1, item.quantity - 1)">-</button>
+                        <span>{{ item.quantity }}</span>
+                        <button (click)="item.quantity = item.quantity + 1">+</button>
+                    </div>
+                </div>
+                <button class="remove-item-button" (click)="removeFromCart(i)">
+                    移除
+                </button>
+            </div>
+
+            <div class="cart-summary">
+                <p>總計：${{ calculateTotal() }}</p>
+                <button class="submit-order-button" (click)="submitOrder()">
+                    確認訂單
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

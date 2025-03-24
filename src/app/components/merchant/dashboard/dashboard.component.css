@@ -162,11 +162,11 @@ mat-form-field {
   border-radius: 50%;
 }
 
-input:checked + .slider {
+input:checked+.slider {
   background-color: #2196F3;
 }
 
-input:checked + .slider:before {
+input:checked+.slider:before {
   transform: translateX(26px);
 }
 
@@ -222,7 +222,8 @@ mat-label {
 
 /* 隐藏的文件输入框 */
 .file-upload-input {
-  display: none; /* 隐藏原本的 file input 按钮 */
+  display: none;
+  /* 隐藏原本的 file input 按钮 */
 }
 
 /* 自定义按钮样式 */
@@ -323,5 +324,5 @@ mat-label {
   .switch {
     transform: scale(0.8);
   }
-  
+
 }

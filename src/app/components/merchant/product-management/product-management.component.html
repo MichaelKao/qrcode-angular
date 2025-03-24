@@ -1,0 +1,118 @@
+<div class="product-container">
+  <div class="actions-header">
+    <div class="header-group">
+      <button class="back-button" (click)="goBack()">返回</button>
+      <h2>商品管理</h2>
+    </div>
+  </div>
+
+  <!-- 商品列表 -->
+  <div class="products-list" #productsList>
+    <h3>商品列表</h3>
+    <div class="product-item" *ngFor="let product of products; let i = index">
+      <div class="product-info">
+        <img [src]="product.picture" *ngIf="product.picture && checkImageValidity(product.picture)"
+          class="product-thumbnail" (error)="handleImageError($event)" alt="商品圖片">
+        <div class="product-details">
+          <h4>{{product.productName}}</h4>
+          <p class="price">${{product.productPrice | number}}</p>
+          <div class="options">
+            <span *ngIf="product.spicy" class="option-tag">辣度可選</span>
+            <span *ngIf="product.coriander" class="option-tag">香菜可選</span>
+            <span *ngIf="product.vinegar" class="option-tag">醋可選</span>
+          </div>
+        </div>
+        <div class="product-actions">
+          <button class="edit-button" (click)="editProduct(i)">編輯</button>
+          <button class="delete-button" (click)="deleteProduct(i)">刪除</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 新增/編輯商品表單 -->
+  <div class="add-form" #addForm>
+    <h3>{{ editingIndex >= 0 ? '編輯商品' : '新增商品' }}</h3>
+    <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+      <div class="form-section">
+        <!-- 圖片上傳區塊 -->
+        <div class="image-upload-section">
+          <div class="form-group">
+            <label>商品圖片</label>
+            <div class="image-upload-container">
+              <div class="button-group">
+                <button type="button" class="upload-button" (click)="fileInput.click()">
+                  選擇圖片
+                </button>
+                <button *ngIf="selectedFileName" type="button" class="remove-button" (click)="removeSelectedImage()">
+                  移除圖片
+                </button>
+              </div>
+              <input #fileInput type="file" class="hidden-input" (change)="onImageSelected($event)" accept="image/*">
+              <div *ngIf="selectedFileName" class="file-info">
+                <span class="file-name">已選擇: {{selectedFileName}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 商品基本資訊 -->
+        <div class="form-group">
+          <label>商品名稱 *</label>
+          <input type="text" formControlName="productName">
+          <span class="error-message"
+            *ngIf="productForm.get('productName')?.touched && productForm.get('productName')?.errors?.['required']">
+            商品名稱為必填欄位
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label>商品價格 *</label>
+          <input type="number" formControlName="productPrice">
+          <span class="error-message"
+            *ngIf="productForm.get('productPrice')?.touched && productForm.get('productPrice')?.errors?.['required']">
+            商品價格為必填欄位
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label>商品描述</label>
+          <textarea formControlName="description"></textarea>
+        </div>
+
+        <!-- 可選配料選項 -->
+        <div class="options-section">
+          <h3>可選配料</h3>
+          <div class="options-grid">
+            <div class="option-item">
+              <label>
+                <input type="checkbox" formControlName="spicy">
+                提供辣度選擇
+              </label>
+            </div>
+            <div class="option-item">
+              <label>
+                <input type="checkbox" formControlName="coriander">
+                提供香菜選擇
+              </label>
+            </div>
+            <div class="option-item">
+              <label>
+                <input type="checkbox" formControlName="vinegar">
+                提供醋選擇
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 表單操作按鈕 -->
+      <div class="form-actions">
+        <button type="submit" class="save-button">
+          儲存商品
+        </button>
+      </div>
+    </form>
+  </div>
+  <app-loading [isLoading]="isLoading"></app-loading>
+</div>

@@ -18,7 +18,7 @@ import { ApiService } from '../../../services/api.service';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    HttpClientModule, 
+    HttpClientModule,
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
@@ -43,11 +43,11 @@ export class LoginComponent {
         next: (response: any) => {
           if (response.code === 200) {
             localStorage.setItem('user', JSON.stringify(response.data));
-            this.router.navigate(['/']); 
+            this.router.navigate(['/']);
           } else {
             this.snackBar.open(response.code + ':' + response.message, '關閉', { duration: 3000 });
           }
-          
+
         },
         error: () => {
           this.snackBar.open('登入失敗，請檢查帳號或密碼', '關閉', { duration: 3000 });
@@ -59,7 +59,7 @@ export class LoginComponent {
   }
 
   goBack(): void {
-    this.location.back(); 
+    this.location.back();
   }
 
   goToForgotPassword(): void {

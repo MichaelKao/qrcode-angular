@@ -1,146 +1,108 @@
 <!-- store-edit.component.html -->
 <div class="store-container">
 
-    <div class="header-section">
-        <button class="back-button" (click)="goBack()">
-          返回上一頁
-        </button>
-    </div>
-
-    <h2>商店資訊</h2>
-
-    <div class="action-buttons">
-      <button class="edit-button" (click)="toggleEdit()" *ngIf="!isEditing">
-        編輯資訊
-      </button>
-      <ng-container *ngIf="isEditing">
-        <button class="save-button" (click)="onSubmit()">儲存</button>
-        <button class="cancel-button" (click)="toggleEdit()">取消</button>
-      </ng-container>
-    </div>
-  
-    <form [formGroup]="storeForm">
-      
-      <div class="logo-upload-section">
-        <div class="form-group">
-          <label>商店 Logo</label>
-          <div class="logo-upload-container">
-            <button type="button" 
-                    class="upload-button" 
-                    (click)="fileInput.click()" 
-                    [disabled]="!isEditing">
-              選擇檔案
-            </button>
-            <input #fileInput 
-                   type="file" 
-                   class="hidden-input" 
-                   (change)="onLogoSelected($event)"
-                   accept="image/*">
-            <span class="file-name" *ngIf="selectedFileName">
-              已選擇: {{selectedFileName}}
-            </span>
-          </div>
-        </div>
-      </div>
-      
-      <div class="form-section">
-        <div class="form-group">
-          <label>商店名稱</label>
-          <input type="text" formControlName="storeName" [readonly]="!isEditing">
-        </div>
-  
-        <div class="form-group">
-          <label>商店描述</label>
-          <textarea formControlName="description" [readonly]="!isEditing"></textarea>
-        </div>
-  
-        <div class="form-group">
-          <label>聯絡電話</label>
-          <input type="tel" formControlName="phone" [readonly]="!isEditing">
-        </div>
-  
-        <div class="form-group">
-          <label>電子信箱</label>
-          <input type="email" formControlName="email" [readonly]="!isEditing">
-        </div>
-  
-        <div class="address-section">
-          <h3>地址資訊</h3>
-          <div class="address-grid">
-            <div class="form-group">
-              <label>郵遞區號</label>
-              <input type="text" 
-                     formControlName="postCode" 
-                     [readonly]="true">
-            </div>
-        
-            <div class="form-group">
-              <label>縣市</label>
-              <select formControlName="city" 
-                      [disabled]="!isEditing"
-                      (change)="onCityChange($event)">
-                <option value="">請選擇縣市</option>
-                <option *ngFor="let city of cities" 
-                        [value]="city.id">
-                  {{city.name}}
-                </option>
-              </select>
-            </div>
-        
-            <div class="form-group">
-              <label>鄉鎮區域</label>
-              <select formControlName="district" 
-                      [disabled]="!isEditing"
-                      (change)="onDistrictChange($event)">
-                <option value="">請選擇鄉鎮區域</option>
-                <option *ngFor="let district of filteredDistricts" 
-                        [value]="district.id">
-                  {{district.name}}
-                </option>
-              </select>
-            </div>
-        
-            <div class="form-group">
-              <label>詳細地址</label>
-              <input type="text" 
-                     formControlName="streetAddress" 
-                     [readonly]="!isEditing">
-            </div>
-          </div>
-        </div>
-  
-        <div class="form-group">
-          <label>座位數量</label>
-          <input type="number" formControlName="seats" [readonly]="!isEditing">
-        </div>
-      </div>
-  
-      <div class="business-hours" formArrayName="businessHoursList">
-        <h3>營業時間設定</h3>
-        <div class="hours-grid">
-          <ng-container *ngFor="let hour of businessHourControls; let i = index">
-            <div class="hour-item" [formGroupName]="i">
-              <span class="day">{{hour.get('week')?.value}}</span>
-              <div class="time-range">
-                <input type="time" 
-                       formControlName="openTime" 
-                       [disabled]="true">
-                <span>至 </span>
-                <input type="time" 
-                       formControlName="closeTime" 
-                       [disabled]="!isEditing ">
-              </div>
-              <label class="switch">
-                <input type="checkbox" 
-                       formControlName="isOpen" 
-                       [disabled]="!isEditing">
-                <span class="slider"></span>
-              </label>
-            </div>
-          </ng-container>
-        </div>
-      </div>
-      
-    </form>
-
+  <div class="header-section">
+    <button class="back-button" (click)="goBack()">
+      返回上一頁
+    </button>
   </div>
+
+  <h2>商店資訊</h2>
+
+  <div class="action-buttons">
+    <button class="edit-button" (click)="toggleEdit()" *ngIf="!isEditing">
+      編輯資訊
+    </button>
+    <ng-container *ngIf="isEditing">
+      <button class="save-button" (click)="onSubmit()">儲存</button>
+      <button class="cancel-button" (click)="toggleEdit()">取消</button>
+    </ng-container>
+  </div>
+
+  <form [formGroup]="storeForm">
+
+    <div class="form-section">
+      <div class="form-group">
+        <label>商店名稱</label>
+        <input type="text" formControlName="storeName" [readonly]="!isEditing">
+      </div>
+
+      <div class="form-group">
+        <label>商店描述</label>
+        <textarea formControlName="description" [readonly]="!isEditing"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>聯絡電話</label>
+        <input type="tel" formControlName="phone" [readonly]="!isEditing">
+      </div>
+
+      <div class="form-group">
+        <label>電子信箱</label>
+        <input type="email" formControlName="email" [readonly]="!isEditing">
+      </div>
+
+      <div class="address-section">
+        <h3>地址資訊</h3>
+        <div class="address-grid">
+          <div class="form-group">
+            <label>郵遞區號</label>
+            <input type="text" formControlName="postCode" [readonly]="true">
+          </div>
+
+          <div class="form-group">
+            <label>縣市</label>
+            <select formControlName="city" [disabled]="!isEditing" (change)="onCityChange($event)">
+              <option value="">請選擇縣市</option>
+              <option *ngFor="let city of cities" [value]="city.id">
+                {{city.name}}
+              </option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>鄉鎮區域</label>
+            <select formControlName="district" [disabled]="!isEditing" (change)="onDistrictChange($event)">
+              <option value="">請選擇鄉鎮區域</option>
+              <option *ngFor="let district of filteredDistricts" [value]="district.id">
+                {{district.name}}
+              </option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>詳細地址</label>
+            <input type="text" formControlName="streetAddress" [readonly]="!isEditing">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>座位數量</label>
+        <input type="number" formControlName="seats" [readonly]="!isEditing">
+      </div>
+    </div>
+
+    <div class="business-hours" formArrayName="businessHoursList">
+      <h3>營業時間設定</h3>
+      <div class="hours-grid">
+        <ng-container *ngFor="let hour of businessHourControls; let i = index">
+          <div class="hour-item" [formGroupName]="i">
+            <span class="day">{{hour.get('week')?.value}}</span>
+            <div class="time-range">
+              <input type="time" formControlName="openTime" [disabled]="true">
+              <span>至 </span>
+              <input type="time" formControlName="closeTime" [disabled]="!isEditing ">
+            </div>
+            <label class="switch">
+              <input type="checkbox" formControlName="isOpen" [disabled]="!isEditing">
+              <span class="slider"></span>
+            </label>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+
+  </form>
+
+</div>

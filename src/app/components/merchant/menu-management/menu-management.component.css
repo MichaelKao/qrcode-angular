@@ -1,35 +1,35 @@
 /* store-edit.component.css */
 .store-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #fff;
-  }
-  
-  select {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    background-color: #fff;
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 8.59L1.41 4 0 5.41l6 6 6-6L10.59 4z'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 8px center;
-    padding-right: 24px;
-  }
-  
-  
-  select:disabled {
-    background-color: #f5f5f5;
-    cursor: not-allowed;
-    opacity: 0.7;
-    color: #666;
-  }
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+}
 
-  /* 檔案上傳區塊樣式 */
+select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #fff;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 8.59L1.41 4 0 5.41l6 6 6-6L10.59 4z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  padding-right: 24px;
+}
+
+
+select:disabled {
+  background-color: #f5f5f5;
+  cursor: not-allowed;
+  opacity: 0.7;
+  color: #666;
+}
+
+/* 檔案上傳區塊樣式 */
 .logo-upload-section {
   background-color: #fff;
   padding: 20px;
@@ -74,291 +74,293 @@
   font-size: 14px;
   word-break: break-all;
 }
-  
-  .header-section {
-    margin-bottom: 20px;
-  }
-  
-  .back-button {
-    background-color: #fff;
-    border: 1px solid #e0e0e0;
-    padding: 6px 16px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-  }
-  
-  .back-button:hover {
-    background-color: #f5f5f5;
-  }
-  
-  h2 {
-    font-size: 24px;
-    margin-bottom: 20px;
-  }
-  
-  .action-buttons {
-    margin-bottom: 20px;
-    text-align: right;
-  }
-  
-  .edit-button,
-  .save-button,
-  .cancel-button {
-    padding: 8px 16px;
-    margin-left: 10px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-  }
-  
-  .edit-button {
-    background-color: #4CAF50;
-    color: white;
-  }
-  
-  .save-button {
-    background-color: #2196F3;
-    color: white;
-  }
-  
-  .cancel-button {
-    background-color: #f44336;
-    color: white;
-  }
-  
-  .form-section {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-  }
-  
-  .form-group {
-    margin-bottom: 15px;
-  }
-  
-  label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: 500;
-    color: #333;
-  }
-  
-  input, textarea {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    background-color: #fff;
-  }
-  
-  input[readonly], textarea[readonly] {
-    background-color: #f5f5f5;
-    cursor: not-allowed;
-  }
-  
-  input:disabled,
-  textarea:disabled {
-    background-color: #f5f5f5 !important;
-    cursor: not-allowed !important;
-    opacity: 0.7;
-    color: #666;
-  }
-  
-  /* 地址區塊樣式 */
-  .address-section {
-    margin-top: 20px;
-  }
-  
-  .address-section h3 {
-    margin-bottom: 15px;
-    font-size: 16px;
-  }
-  
+
+.header-section {
+  margin-bottom: 20px;
+}
+
+.back-button {
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  padding: 6px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.back-button:hover {
+  background-color: #f5f5f5;
+}
+
+h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.action-buttons {
+  margin-bottom: 20px;
+  text-align: right;
+}
+
+.edit-button,
+.save-button,
+.cancel-button {
+  padding: 8px 16px;
+  margin-left: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.edit-button {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.save-button {
+  background-color: #2196F3;
+  color: white;
+}
+
+.cancel-button {
+  background-color: #f44336;
+  color: white;
+}
+
+.form-section {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+  color: #333;
+}
+
+input,
+textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #fff;
+}
+
+input[readonly],
+textarea[readonly] {
+  background-color: #f5f5f5;
+  cursor: not-allowed;
+}
+
+input:disabled,
+textarea:disabled {
+  background-color: #f5f5f5 !important;
+  cursor: not-allowed !important;
+  opacity: 0.7;
+  color: #666;
+}
+
+/* 地址區塊樣式 */
+.address-section {
+  margin-top: 20px;
+}
+
+.address-section h3 {
+  margin-bottom: 15px;
+  font-size: 16px;
+}
+
+.address-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+/* 營業時間樣式 */
+.business-hours {
+  margin-top: 20px;
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.business-hours h3 {
+  margin-bottom: 15px;
+  font-size: 16px;
+}
+
+.hours-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.hour-item {
+  display: grid;
+  grid-template-columns: 80px 1fr 80px;
+  align-items: center;
+  background-color: #fff;
+  padding: 12px;
+  border-radius: 4px;
+  gap: 15px;
+}
+
+.day {
+  font-weight: 500;
+}
+
+.time-range {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.time-range input {
+  width: 110px;
+  text-align: center;
+}
+
+.time-range input:disabled {
+  background-color: #f5f5f5 !;
+  pointer-events: none;
+  opacity: 0.7;
+  color: #666;
+}
+
+.time-range span {
+  margin: 0 4px;
+}
+
+/* Switch 樣式 */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.switch input:disabled+.slider {
+  opacity: 0.7;
+  cursor: not-allowed;
+  background-color: #e0e0e0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 24px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked+.slider {
+  background-color: #2196F3;
+}
+
+input:checked:disabled+.slider {
+  background-color: #90caf9;
+}
+
+input:checked+.slider:before {
+  transform: translateX(26px);
+}
+
+/* RWD 響應式設計 */
+@media (max-width: 768px) {
   .address-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
+    grid-template-columns: 1fr;
   }
-  
-  /* 營業時間樣式 */
-  .business-hours {
-    margin-top: 20px;
-    background-color: #f8f9fa;
-    padding: 20px;
-    border-radius: 8px;
+
+  .hour-item {
+    grid-template-columns: 60px 1fr 60px;
   }
-  
-  .business-hours h3 {
-    margin-bottom: 15px;
-    font-size: 16px;
+
+  .time-range {
+    flex-direction: row;
+    justify-content: space-between;
   }
-  
-  .hours-grid {
+
+  .time-range input {
+    width: 45%;
+  }
+
+  .action-buttons {
     display: flex;
     flex-direction: column;
     gap: 10px;
   }
-  
-  .hour-item {
-    display: grid;
-    grid-template-columns: 80px 1fr 80px;
-    align-items: center;
-    background-color: #fff;
-    padding: 12px;
-    border-radius: 4px;
-    gap: 15px;
-  }
-  
-  .day {
-    font-weight: 500;
-  }
-  
-  .time-range {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  
-  .time-range input {
-    width: 110px;
-    text-align: center;
-  }
-  
-  .time-range input:disabled {
-    background-color: #f5f5f5!; 
-    pointer-events: none;
-    opacity: 0.7;
-    color: #666;
-  }
-  
-  .time-range span {
-    margin: 0 4px;
-  }
-  
-  /* Switch 樣式 */
-  .switch {
-    position: relative;
-    display: inline-block;
-    width: 50px;
-    height: 24px;
-  }
-  
-  .switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-  }
-  
-  .switch input:disabled + .slider {
-    opacity: 0.7;
-    cursor: not-allowed;
-    background-color: #e0e0e0;
-  }
-  
-  .slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    transition: .4s;
-    border-radius: 24px;
-  }
-  
-  .slider:before {
-    position: absolute;
-    content: "";
-    height: 16px;
-    width: 16px;
-    left: 4px;
-    bottom: 4px;
-    background-color: white;
-    transition: .4s;
-    border-radius: 50%;
-  }
-  
-  input:checked + .slider {
-    background-color: #2196F3;
-  }
-  
-  input:checked:disabled + .slider {
-    background-color: #90caf9;
-  }
-  
-  input:checked + .slider:before {
-    transform: translateX(26px);
-  }
-  
-  /* RWD 響應式設計 */
-  @media (max-width: 768px) {
-    .address-grid {
-      grid-template-columns: 1fr;
-    }
-    
-    .hour-item {
-      grid-template-columns: 60px 1fr 60px;
-    }
-    
-    .time-range {
-      flex-direction: row;
-      justify-content: space-between;
-    }
-    
-    .time-range input {
-      width: 45%;
-    }
-  
-    .action-buttons {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-  
-    .edit-button,
-    .save-button,
-    .cancel-button {
-      margin: 0;
-      width: 100%;
-    }
 
-    .logo-upload-container {
-      flex-direction: column;
-      align-items: flex-start;
+  .edit-button,
+  .save-button,
+  .cancel-button {
+    margin: 0;
+    width: 100%;
   }
-  
+
+  .logo-upload-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
   .upload-button {
-      width: 100%;
+    width: 100%;
   }
-  
+
   .file-name {
-      margin-top: 8px;
+    margin-top: 8px;
   }
+}
+
+@media (max-width: 480px) {
+  .store-container {
+    padding: 15px;
   }
-  
-  @media (max-width: 480px) {
-    .store-container {
-      padding: 15px;
-    }
-  
-    h2 {
-      font-size: 20px;
-    }
-  
-    .hour-item {
-      grid-template-columns: 1fr;
-      gap: 10px;
-    }
-    
-    .time-range {
-      width: 100%;
-    }
-  
-    .switch {
-      margin-top: 8px;
-    }
+
+  h2 {
+    font-size: 20px;
   }
+
+  .hour-item {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .time-range {
+    width: 100%;
+  }
+
+  .switch {
+    margin-top: 8px;
+  }
+}

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
-import { HttpClient, HttpClientModule } from '@angular/common/http'; 
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { LocationService } from '../../../services/location.service';
@@ -33,21 +33,20 @@ interface District {
   selector: 'app-menu-management',
   templateUrl: './menu-management.component.html',
   styleUrl: './menu-management.component.css',
-  standalone: true, 
+  standalone: true,
   imports: [
-    CommonModule,  
+    CommonModule,
     ReactiveFormsModule,
-    HttpClientModule,  
+    HttpClientModule,
   ]
 })
 export class MenuManagementComponent implements OnInit {
   storeForm: FormGroup;
   isEditing = false;
-  selectedFileName: string | null = null;
   cities: City[] = [];
   districts: District[] = [];
   filteredDistricts: District[] = [];
-  
+
   constructor(private fb: FormBuilder, private location: Location, private http: HttpClient, private router: Router, private snackBar: MatSnackBar, private locationService: LocationService, private apiService: ApiService) {
     this.storeForm = this.fb.group({
       storeName: ['', Validators.required],
@@ -85,37 +84,20 @@ export class MenuManagementComponent implements OnInit {
     }
     // 確保監聽所有 `isOpen` 欄位的變化
     this.businessHourControls.forEach(control => {
-    const group = control as FormGroup;
-    group.get('isOpen')?.valueChanges.subscribe(isOpen => {
-      console.log("isOpen", isOpen);
-      if (!isOpen) {
-        group.get('openTime')?.reset({ value: null, disabled: true });
-        group.get('closeTime')?.reset({ value: null, disabled: true });
-      } else {
-        group.get('openTime')?.enable();
-        group.get('closeTime')?.enable();
-        group.get('openTime')?.setValue('09:00');
-        group.get('closeTime')?.setValue('22:00');
-      }
+      const group = control as FormGroup;
+      group.get('isOpen')?.valueChanges.subscribe(isOpen => {
+        console.log("isOpen", isOpen);
+        if (!isOpen) {
+          group.get('openTime')?.reset({ value: null, disabled: true });
+          group.get('closeTime')?.reset({ value: null, disabled: true });
+        } else {
+          group.get('openTime')?.enable();
+          group.get('closeTime')?.enable();
+          group.get('openTime')?.setValue('09:00');
+          group.get('closeTime')?.setValue('22:00');
+        }
+      });
     });
-  });
-  }
-
-  onLogoSelected(event: any): void {
-
-    const inputElement = event.target as HTMLInputElement;
-  
-    if (inputElement && inputElement.files) {
-      const file = inputElement.files[0];
-      if (file) {
-        this.selectedFileName = file.name; 
-        this.storeForm.get('logo')?.setValue(file); 
-      } else {
-        this.selectedFileName = null; 
-      }
-    } else {
-      this.selectedFileName = null; 
-    }
   }
 
   loadStoreData() {
@@ -149,7 +131,7 @@ export class MenuManagementComponent implements OnInit {
             seats: storeData.seats
           });
         }
-  
+
         // 設置營業時間
         const hoursArray = this.storeForm.get('businessHoursList') as FormArray;
         // 清空現有的營業時間
@@ -158,17 +140,17 @@ export class MenuManagementComponent implements OnInit {
         }
         // 添加新的營業時間
         console.log("loadStoreData--------->");
-       storeData.businessHoursList.forEach((hour: BusinessHour) => {
+        storeData.businessHoursList.forEach((hour: BusinessHour) => {
           hoursArray.push(this.fb.group({
-            seq: [{value: hour.seq, disabled: !this.isEditing}],
+            seq: [{ value: hour.seq, disabled: !this.isEditing }],
             week: [hour.week],
-            isOpen: [{value: hour.isOpen, disabled: !this.isEditing}],
-            openTime: [{value: hour.openTime, disabled: !this.isEditing}],
-            closeTime: [{value: hour.closeTime, disabled: !this.isEditing}]
+            isOpen: [{ value: hour.isOpen, disabled: !this.isEditing }],
+            openTime: [{ value: hour.openTime, disabled: !this.isEditing }],
+            closeTime: [{ value: hour.closeTime, disabled: !this.isEditing }]
           }));
-          
-        }); 
-        
+
+        });
+
       }
 
     }
@@ -181,7 +163,7 @@ export class MenuManagementComponent implements OnInit {
     this.storeForm.get('district')?.setValue('');
     this.updatePostCode();
   }
-  
+
   onDistrictChange(event: Event) {
     const target = event.target as HTMLSelectElement;
     this.updatePostCode();
@@ -190,7 +172,7 @@ export class MenuManagementComponent implements OnInit {
   updatePostCode() {
     const cityId = this.storeForm.get('city')?.value;
     const districtId = this.storeForm.get('district')?.value;
-    
+
     if (cityId && districtId) {
       const district = this.districts.find(d => d.id === Number(districtId));
       if (district) {
@@ -219,10 +201,10 @@ export class MenuManagementComponent implements OnInit {
     }
 
     const hoursArray = this.storeForm.get('businessHoursList') as FormArray;
-    
+
     hoursArray.controls.forEach(control => {
       // const isOpenControl = control.get('isOpen');
-      if(this.isEditing){
+      if (this.isEditing) {
         control.get('isOpen')?.enable();
       }
       if (control.value.isOpen && this.isEditing) {
@@ -245,7 +227,7 @@ export class MenuManagementComponent implements OnInit {
       const formData = new FormData();
       const userData = JSON.parse(localStorage.getItem('user') ?? '{}');
       const formValue = this.storeForm.value;
-      
+
       // 直接指定要傳送的欄位
       formData.append('seq', userData.userStoreVo.seq);
       formData.append('storeSeq', userData.seq);
@@ -256,26 +238,26 @@ export class MenuManagementComponent implements OnInit {
       formData.append('streetAddress', this.storeForm.get('streetAddress')?.value);
       formData.append('seats', this.storeForm.get('seats')?.value);
       formData.append('postCode', this.storeForm.get('postCode')?.value);
-      
+
       // 處理城市和區域的中文名稱   
       const selectedCityId = Number(this.storeForm.get('city')?.value);
       const selectedDistrictId = Number(this.storeForm.get('district')?.value);
-      
+
       const cityName = this.cities.find(c => c.id === selectedCityId)?.name ?? '';
       const districtName = this.districts.find(d => d.id === selectedDistrictId)?.name ?? '';
-      
+
       formData.append('city', cityName);
       formData.append('district', districtName);
-      
+
       // 處理營業時間
       const businessHours = formValue.businessHoursList.map((hour: any) => ({
-        week: hour.week, 
+        week: hour.week,
         isOpen: hour.isOpen,
-        openTime: hour.isOpen ? hour.openTime : null, 
+        openTime: hour.isOpen ? hour.openTime : null,
         closeTime: hour.isOpen ? hour.closeTime : null
       }));
       formData.append('businessHours', JSON.stringify(businessHours));
-      
+
       // 處理 logo 檔案
       const logo = this.storeForm.get('logo')?.value;
       if (logo instanceof File) {
@@ -287,8 +269,8 @@ export class MenuManagementComponent implements OnInit {
 
           if (response.code === 200) {
             localStorage.setItem('user', JSON.stringify(response.data));
-          this.snackBar.open('商店資訊更新成功', '關閉', { duration: 3000 });
-          this.router.navigate(['/']);
+            this.snackBar.open('商店資訊更新成功', '關閉', { duration: 3000 });
+            this.router.navigate(['/']);
           } else {
             this.snackBar.open(response.code + ':' + response.message, '關閉', { duration: 3000 });
           }
@@ -312,5 +294,5 @@ export class MenuManagementComponent implements OnInit {
   goBack() {
     this.location.back();
   }
-  
+
 }
