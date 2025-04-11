@@ -18,7 +18,9 @@
 
     <!-- 商品列表 -->
     <div class="product-grid">
-        <div *ngFor="let product of products" class="product-card">
+        <div *ngFor="let product of products" class="product-card"
+            [ngClass]="{'sold-out-product': product.soldOut === true}">
+            <div *ngIf="product.soldOut === true" class="sold-out-badge">售完</div>
             <img *ngIf="product.picture" [src]="product.picture" [alt]="product.productName" class="product-image">
             <div class="product-info">
                 <h3>{{ product.productName }}</h3>
@@ -26,7 +28,8 @@
                 <p class="product-description">{{ product.description }}</p>
 
                 <!-- 特殊選項 -->
-                <div *ngIf="product.spicy || product.coriander || product.vinegar" class="product-options">
+                <div *ngIf="(product.spicy || product.coriander || product.vinegar) && !product.soldOut"
+                    class="product-options">
                     <!-- 辣度選擇 -->
                     <div *ngIf="product.spicy" class="spicy-options">
                         <label>辣度選擇</label>
@@ -60,8 +63,8 @@
                         </div>
                     </div>
                 </div>
-                <button class="add-to-cart-button" (click)="addToCart(product)">
-                    加入購物車
+                <button class="add-to-cart-button" (click)="addToCart(product)" [disabled]="product.soldOut === true">
+                    {{ product.soldOut === true ? '已售完' : '加入購物車' }}
                 </button>
             </div>
         </div>

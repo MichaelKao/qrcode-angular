@@ -1,0 +1,74 @@
+<div class="order-detail-container">
+    <h2>訂單詳情</h2>
+
+    <div *ngIf="loading" class="loading-spinner">
+        載入中...
+    </div>
+
+    <div *ngIf="!loading && orderData" class="order-info">
+        <div class="order-header">
+            <h3>訂單號碼: {{ orderData.orderId }}</h3>
+            <p class="order-status" [ngClass]="orderData.status">
+                {{ orderData.status === 'pending' ? '處理中' :
+                orderData.status === 'accepted' ? '已接受' :
+                orderData.status === 'completed' ? '已完成' :
+                orderData.status === 'rejected' ? '已拒絕' :
+                orderData.status === 'cancelled' ? '已取消' : orderData.status }}
+            </p>
+        </div>
+
+        <div class="order-details">
+            <p><strong>桌號:</strong> {{ orderData.tableNum ?? '無內用桌號，外帶' }}</p>
+            <p><strong>訂單時間:</strong> {{ orderData.createTime | date:'yyyy-MM-dd HH:mm:ss' }}</p>
+        </div>
+
+        <div class="order-items">
+            <h4>訂購項目</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>商品名稱</th>
+                        <th>數量</th>
+                        <th>單價</th>
+                        <th>小計</th>
+                        <th>特殊要求</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of orderData.items">
+                        <td>{{ item.productName }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>${{ item.price }}</td>
+                        <td>${{ item.price * item.quantity }}</td>
+                        <td>
+                            <div *ngIf="item.spicyLevel && item.spicyLevel !== 'none'">
+                                辣度: {{
+                                item.spicyLevel === 'small' ? '小辣' :
+                                item.spicyLevel === 'medium' ? '中辣' :
+                                item.spicyLevel === 'large' ? '大辣' : ''
+                                }}
+                            </div>
+                            <div *ngIf="item.wantsCoriander !== undefined">
+                                香菜: {{ item.wantsCoriander ? '要' : '不要' }}
+                            </div>
+                            <div *ngIf="item.wantsVinegar !== undefined">
+                                醋: {{ item.wantsVinegar ? '要' : '不要' }}
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- 總價行 -->
+                    <tr class="total-row">
+                        <td colspan="1" class="total-label"><strong>總金額</strong></td>
+                        <td colspan="4" class="total-amount"><strong>${{ orderData.totalAmount }}</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <button class="back-button" (click)="goBack()">返回</button>
+    </div>
+
+    <div *ngIf="!loading && !orderData" class="error-message">
+        找不到訂單資訊
+    </div>
+</div>

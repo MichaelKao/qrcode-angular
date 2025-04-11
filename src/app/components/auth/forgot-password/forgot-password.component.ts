@@ -51,10 +51,10 @@ export class ForgotPasswordComponent {
         .subscribe({
           next: (response: any) => {
             if (response.code === 200) {
-              this.snackBar.open('密码重置链接已发送到您的电子邮件', '关闭', { duration: 3000 });
+              this.snackBar.open('密碼已發送至您的電子郵件', '關閉', { duration: 3000 });
               this.router.navigate(['/login']);
             } else {
-              this.snackBar.open(response.code + ':' + response.message, '关闭', { duration: 3000 });
+              this.snackBar.open(response.code + ':' + response.message, '關閉', { duration: 3000 });
             }
           },
           error: (err) => {
@@ -62,7 +62,7 @@ export class ForgotPasswordComponent {
           }
         });
     } else {
-      this.snackBar.open('请输入有效的电子邮件地址', '关闭', { duration: 3000 });
+      this.snackBar.open('請輸入有效的電子郵件地址', '關閉', { duration: 3000 });
     }
   }
 

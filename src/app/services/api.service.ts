@@ -9,7 +9,7 @@ import { environment } from '../../environments/environment';
 export class ApiService {
   private baseUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   // Store APIs
   updateStore(formData: FormData): Observable<any> {
@@ -53,9 +53,13 @@ export class ApiService {
   showShop(userId: number): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/order/getShopInfo/${userId}`);
   }
-  
+
   getOrderInfo(storeId: number): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/order/getOrderInfo/${storeId}`);
+  }
+
+  updateProductSoldOutStatus(data: { seq: number; productSeq: number; soldOut: boolean }): Observable<any> {
+    return this.http.put<any>(`${this.baseUrl}/store/updateProductSoldOutStatus`, data);
   }
 
 }

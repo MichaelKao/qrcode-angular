@@ -114,6 +114,30 @@ textarea {
   cursor: pointer;
 }
 
+.sold-out-button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  background-color: #FF9800;
+  color: white;
+}
+
+.sold-out-button.cancel-sold-out {
+  background-color: #9E9E9E;
+}
+
+.sold-out-tag {
+  background-color: #FF9800;
+  color: white;
+}
+
+/* 對於售完的商品，可以添加一些視覺提示 */
+.product-item.sold-out .product-details {
+  opacity: 0.7;
+}
+
 .remove-button {
   background-color: #f44336;
 }
@@ -318,4 +342,20 @@ textarea {
     margin-top: 10px;
     justify-content: flex-end;
   }
+
+  .product-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+    justify-content: flex-end;
+  }
+
+  .edit-button,
+  .delete-button,
+  .sold-out-button {
+    flex: 1;
+    min-width: 80px;
+  }
+
 }

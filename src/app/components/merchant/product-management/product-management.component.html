@@ -25,6 +25,9 @@
         <div class="product-actions">
           <button class="edit-button" (click)="editProduct(i)">編輯</button>
           <button class="delete-button" (click)="deleteProduct(i)">刪除</button>
+          <button class="sold-out-button" [class.cancel-sold-out]="product.soldOut" (click)="toggleSoldOut(i)">
+            {{ product.soldOut ? '取消售完' : '設為售完' }}
+          </button>
         </div>
       </div>
     </div>

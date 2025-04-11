@@ -13,6 +13,8 @@ import { ShopComponent } from './components/merchant/shop/shop.component';
 
 import { OrderNotificationComponent } from './components/order-notification/order-notification.component';
 
+import { OrderDetailComponent } from './components/order-details/order-details.component';
+
 import { QrScanComponent } from './components/qr-scan/qr-scan.component';
 
 export const routes: Routes = [
@@ -22,7 +24,7 @@ export const routes: Routes = [
     component: QrScanComponent
   },
   {
-    path: 'auth', 
+    path: 'auth',
     children: [
       { path: 'login', component: LoginComponent },
       { path: 'register', component: RegisterComponent },
@@ -42,7 +44,8 @@ export const routes: Routes = [
   {
     path: 'order',
     children: [
-      { path: 'order-notification', component: OrderNotificationComponent }
+      { path: 'order-notification', component: OrderNotificationComponent },
+      { path: 'order-details', component: OrderDetailComponent }
     ]
   }
 ];

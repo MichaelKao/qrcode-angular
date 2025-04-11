@@ -51,6 +51,7 @@ interface Product {
   picture?: string | null;
   createTime?: string;
   updateTime?: string;
+  soldOut: boolean;
 }
 
 @Component({
@@ -323,7 +324,8 @@ export class ProductManagementComponent {
                   : updatedProductData.picture)
                 : null,
               createTime: updatedProductData.createTime,
-              updateTime: updatedProductData.updateTime
+              updateTime: updatedProductData.updateTime,
+              soldOut: updatedProductData.soldOut
             };
 
             // 更新陣列中的商品
@@ -451,7 +453,7 @@ export class ProductManagementComponent {
     if (file) {
       // 記錄原始文件大小
       console.log('原始文件大小:', file.size / 1024, 'KB');
-      
+
       // 檢查文件類型
       const validTypes = ['image/jpeg', 'image/png', 'image/jpg'];
       if (!validTypes.includes(file.type)) {
@@ -459,17 +461,17 @@ export class ProductManagementComponent {
         event.target.value = '';
         return;
       }
-      
+
       // 無論文件大小如何，都進行壓縮以確保小於1MB
       this.compressImage(file).then(compressedFile => {
         console.log('處理後文件大小:', compressedFile.size / 1024, 'KB');
-        
+
         // 如果壓縮後仍然超過1MB，進一步壓縮
         if (compressedFile.size > 1 * 1024 * 1024) {
           console.log('文件仍然過大，進一步壓縮');
           return this.furtherCompressImage(compressedFile);
         }
-        
+
         return compressedFile;
       }).then(finalFile => {
         console.log('最終文件大小:', finalFile.size / 1024, 'KB');
@@ -482,7 +484,7 @@ export class ProductManagementComponent {
     }
     event.target.value = '';
   }
-  
+
   compressImage(file: File): Promise<File> {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -494,38 +496,38 @@ export class ProductManagementComponent {
           // 計算新的尺寸，保持原比例
           let width = img.width;
           let height = img.height;
-          
+
           // 根據原始文件大小動態調整目標尺寸
           const MAX_WIDTH = file.size > 2 * 1024 * 1024 ? 800 : 1200; // 超過2MB用更小的尺寸
           const MAX_HEIGHT = file.size > 2 * 1024 * 1024 ? 800 : 1200;
-          
+
           if (width > MAX_WIDTH) {
             height = Math.round(height * (MAX_WIDTH / width));
             width = MAX_WIDTH;
           }
-          
+
           if (height > MAX_HEIGHT) {
             width = Math.round(width * (MAX_HEIGHT / height));
             height = MAX_HEIGHT;
           }
-          
+
           canvas.width = width;
           canvas.height = height;
-          
+
           // 繪製圖片到canvas
           const ctx = canvas.getContext('2d');
           if (!ctx) {
             reject(new Error('無法獲取 canvas 上下文'));
             return;
           }
-          
+
           ctx.drawImage(img, 0, 0, width, height);
-          
+
           // 根據原始文件大小動態調整壓縮品質
           let quality = 0.7;
           if (file.size > 2 * 1024 * 1024) quality = 0.5; // 大於2MB
           else if (file.size > 1 * 1024 * 1024) quality = 0.6; // 大於1MB
-          
+
           // 轉換為blob
           canvas.toBlob((blob) => {
             if (!blob) {
@@ -533,29 +535,29 @@ export class ProductManagementComponent {
               return;
             }
             // 創建新的文件對象
-            const compressedFile = new File([blob], file.name, { 
+            const compressedFile = new File([blob], file.name, {
               type: 'image/jpeg', // 統一轉換為jpeg以提高壓縮率
-              lastModified: Date.now() 
+              lastModified: Date.now()
             });
             resolve(compressedFile);
           }, 'image/jpeg', quality); // 使用jpeg格式和動態品質
         };
-        
+
         img.onerror = () => {
           reject(new Error('圖片加載失敗'));
         };
-        
+
         img.src = event.target.result;
       };
-      
+
       reader.onerror = () => {
         reject(new Error('文件讀取失敗'));
       };
-      
+
       reader.readAsDataURL(file);
     });
   }
-  
+
   // 如果第一次壓縮後仍然超過1MB，進行更激進的壓縮
   furtherCompressImage(file: File): Promise<File> {
     return new Promise((resolve, reject) => {
@@ -567,57 +569,57 @@ export class ProductManagementComponent {
           // 更激進地縮小尺寸
           let width = img.width;
           let height = img.height;
-          
+
           // 設置更小的最大尺寸
           const MAX_WIDTH = 600;
           const MAX_HEIGHT = 600;
-          
+
           if (width > MAX_WIDTH) {
             height = Math.round(height * (MAX_WIDTH / width));
             width = MAX_WIDTH;
           }
-          
+
           if (height > MAX_HEIGHT) {
             width = Math.round(width * (MAX_HEIGHT / height));
             height = MAX_HEIGHT;
           }
-          
+
           canvas.width = width;
           canvas.height = height;
-          
+
           const ctx = canvas.getContext('2d');
           if (!ctx) {
             reject(new Error('無法獲取 canvas 上下文'));
             return;
           }
-          
+
           ctx.drawImage(img, 0, 0, width, height);
-          
+
           // 使用更低的品質
           canvas.toBlob((blob) => {
             if (!blob) {
               reject(new Error('無法將 canvas 轉換為 blob'));
               return;
             }
-            const furtherCompressedFile = new File([blob], file.name, { 
+            const furtherCompressedFile = new File([blob], file.name, {
               type: 'image/jpeg',
-              lastModified: Date.now() 
+              lastModified: Date.now()
             });
             resolve(furtherCompressedFile);
           }, 'image/jpeg', 0.4); // 更低的品質
         };
-        
+
         img.onerror = () => {
           reject(new Error('圖片加載失敗'));
         };
-        
+
         img.src = event.target.result;
       };
-      
+
       reader.onerror = () => {
         reject(new Error('文件讀取失敗'));
       };
-      
+
       reader.readAsDataURL(file);
     });
   }
@@ -648,6 +650,64 @@ export class ProductManagementComponent {
       const currentProduct = this.products[this.editingIndex];
       currentProduct.picture = null;
     }
+  }
+
+  // 切換商品售完狀態
+  toggleSoldOut(index: number): void {
+    this.isLoading = true;
+    const product = this.products[index];
+
+    if (!product || !product.seq) {
+      console.error('商品序號不存在');
+      this.isLoading = false;
+      alert('更新商品狀態失敗：商品資訊不完整');
+      return;
+    }
+
+    // 切換狀態
+    const newSoldOutStatus = !product.soldOut;
+
+    // 準備發送到後端的數據
+    const updateData = {
+      seq: product.seq,
+      productSeq: product.productSeq,
+      soldOut: newSoldOutStatus
+    };
+
+    this.apiService.updateProductSoldOutStatus(updateData).subscribe({
+      next: (response: ApiResponse) => {
+        // 更新本地商品狀態
+        this.products[index].soldOut = newSoldOutStatus;
+
+        // 更新 localStorage
+        const userData: UserData = JSON.parse(localStorage.getItem('user') ?? '{}');
+        if (userData?.userStoreVo?.userProductVoList) {
+          const productIndex = userData.userStoreVo.userProductVoList.findIndex(p => p.seq === product.seq);
+          if (productIndex !== -1) {
+            userData.userStoreVo.userProductVoList[productIndex].soldOut = newSoldOutStatus;
+            localStorage.setItem('user', JSON.stringify(userData));
+          }
+        }
+
+        // 強制更新視圖
+        this.cdr.markForCheck();
+        this.cdr.detectChanges();
+
+        this.isLoading = false;
+        alert(newSoldOutStatus ? '商品已設為售完' : '商品已恢復可售狀態');
+      },
+      error: (error: any) => {
+        console.error('更新商品售完狀態失敗:', error);
+        this.isLoading = false;
+        alert('更新商品狀態失敗，請稍後再試');
+      },
+      complete: () => {
+        // 確保在所有情況下都會關閉 loading
+        this.isLoading = false;
+        this.cdr.markForCheck();
+        this.cdr.detectChanges();
+      }
+    });
   }
 
   goBack(): void {

@@ -65,7 +65,7 @@ export interface OrderStatusUpdate {
           
           <div class="order-header">
             <span class="order-id">訂單 #{{orderItem.orderId}}</span>
-            <span class="order-time">{{orderItem.createTime | date:'yyyy/MM/dd HH:mm:ss'}}</span>
+            <span class="order-time">{{orderItem.createTime | date:'yyyy/MM/dd HH:mm:ss':'Asia/Taipei'}}</span>
             <span class="order-status">{{getStatusText(orderItem.status)}}</span>
           </div>
 
@@ -73,7 +73,7 @@ export interface OrderStatusUpdate {
             <span class="table-tag" 
                   [class.delivery-tag]="orderItem.tableNum === 0"
                   [class.takeout-tag]="orderItem.tableNum === null">
-              {{ orderItem.tableNum === 0 ? '外送' : 
+              {{ orderItem.tableNum === 0 ? '外帶' : 
                  orderItem.tableNum === null ? '外帶' : 
                  '座位:' + orderItem.tableNum }}
             </span>

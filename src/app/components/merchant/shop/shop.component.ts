@@ -3,6 +3,8 @@ import { CommonModule, Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../../services/api.service';
 import { WebsocketService } from '../../../services/websocket.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 // 定義介面與上一個元件保持一致性
 interface ApiResponse {
@@ -37,6 +39,7 @@ interface Product {
   spicy: boolean;
   coriander: boolean;
   vinegar: boolean;
+  soldOut: boolean;
 }
 
 type SpicyLevel = 'none' | 'small' | 'medium' | 'large';
@@ -44,7 +47,7 @@ type SpicyLevel = 'none' | 'small' | 'medium' | 'large';
 interface OrderItem {
   product: Product;
   quantity: number;
-  spicyLevel?: SpicyLevel;  // 使用明確的聯合型別
+  spicyLevel?: SpicyLevel;
   wantsCoriander?: boolean;
   wantsVinegar?: boolean;
 }
@@ -70,15 +73,50 @@ export class ShopComponent implements OnInit {
 
   Math = Math;
 
-  constructor(private apiService: ApiService, private websocketService: WebsocketService, private location: Location) { }
+  constructor(private apiService: ApiService, private websocketService: WebsocketService, private location: Location, private snackBar: MatSnackBar, private router: Router) { }
 
   ngOnInit() {
     this.loadStoreDetails();
   }
 
+  // loadStoreDetails() {
+  //   const userData: UserData = JSON.parse(localStorage.getItem('user') ?? '{}');
+  //   this.apiService.showShop(userData.seq).subscribe({
+  //     next: (response: ApiResponse) => {
+  //       const storeData = response.data.userStoreVo;
+  //       this.store = {
+  //         ...storeData,
+  //         logo: storeData.logo && storeData.logo !== ''
+  //           ? (!this.isBase64(storeData.logo)
+  //             ? 'data:image/jpeg;base64,' + storeData.logo
+  //             : storeData.logo)
+  //           : null
+  //       };
+
+  //       // 處理商品圖片
+  //       this.products = storeData.userProductVoList.map(product => ({
+  //         ...product,
+  //         picture: product.picture
+  //           ? (!this.isBase64(product.picture)
+  //             ? 'data:image/jpeg;base64,' + product.picture
+  //             : product.picture)
+  //           : null
+
+  //       }));
+  //     },
+  //     error: (error) => {
+  //       console.error('載入店家資訊失敗', error);
+  //     }
+  //   });
+  // }
+
   loadStoreDetails() {
-    // 假設有一個 API 方法可以取得店家資訊
     const userData: UserData = JSON.parse(localStorage.getItem('user') ?? '{}');
+
+    // 直接從 localStorage 獲取產品列表作為備份數據
+    const localStorageProducts = userData?.userStoreVo?.userProductVoList || [];
+    console.log('localStorage 中的產品數據:', localStorageProducts);
+
     this.apiService.showShop(userData.seq).subscribe({
       next: (response: ApiResponse) => {
         const storeData = response.data.userStoreVo;
@@ -91,15 +129,26 @@ export class ShopComponent implements OnInit {
             : null
         };
 
-        // 處理商品圖片
-        this.products = storeData.userProductVoList.map(product => ({
-          ...product,
-          picture: product.picture
-            ? (!this.isBase64(product.picture)
-              ? 'data:image/jpeg;base64,' + product.picture
-              : product.picture)
-            : null
-        }));
+        // 處理商品圖片並手動設置 soldOut 屬性
+        this.products = storeData.userProductVoList.map(product => {
+          // 在 localStorage 中尋找匹配的產品來獲取 soldOut 值
+          const localProduct = localStorageProducts.find(p => p.seq === product.seq);
+
+          return {
+            ...product,
+            soldOut: localProduct?.soldOut === true, // 明確設置 soldOut
+            picture: product.picture
+              ? (!this.isBase64(product.picture)
+                ? 'data:image/jpeg;base64,' + product.picture
+                : product.picture)
+              : null
+          };
+        });
+
+        console.log('最終處理後的商品列表:', this.products.map(p => ({
+          name: p.productName,
+          soldOut: p.soldOut
+        })));
       },
       error: (error) => {
         console.error('載入店家資訊失敗', error);
@@ -113,6 +162,11 @@ export class ShopComponent implements OnInit {
   }
 
   addToCart(product: Product) {
+
+    if (product.soldOut) {
+      return;
+    }
+
     const newItem: OrderItem = {
       product,
       quantity: 1,
@@ -173,9 +227,10 @@ export class ShopComponent implements OnInit {
       return;
     }
 
+    const orderNum = this.generateOrderId()
 
     const orderData = {
-      orderId: this.generateOrderId(), // 生成唯一訂單ID
+      orderId: orderNum, // 生成唯一訂單ID
       storeSeq: this.store?.seq,
       tableNum: this.tableNum,
       createTime: new Date().toISOString(),
@@ -195,9 +250,16 @@ export class ShopComponent implements OnInit {
     // 直接通過 WebSocket 發送訂單
     this.websocketService.sendOrder(orderData);
 
-    alert('訂單成功送出');
+    this.snackBar.open('訂單成功送出。訂單編號為:' + orderNum, '關閉', { duration: 3000 });
     this.cart = [];
 
+    // 將訂單資訊存儲到 localStorage
+    localStorage.setItem('currentOrder', JSON.stringify(orderData));
+
+    // 延遲3秒後導航到訂單頁面
+    setTimeout(() => {
+      this.router.navigate(['/order/order-details']);
+    }, 3000);
   }
 
   private generateOrderId(): string {
@@ -206,14 +268,14 @@ export class ShopComponent implements OnInit {
     const year = now.getFullYear().toString().slice(-2);
     const month = (now.getMonth() + 1).toString().padStart(2, '0');
     const day = now.getDate().toString().padStart(2, '0');
-    
+
     // 使用當前時間的小時和分鐘
     const hour = now.getHours().toString().padStart(2, '0');
     const minute = now.getMinutes().toString().padStart(2, '0');
-    
+
     // 添加一個短的隨機字串（4位）以確保唯一性
     const randomString = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
-    
+
     // 格式：OD-YYMMDD-HHMM-XXXX
     return `OD-${year}${month}${day}-${hour}${minute}-${randomString}`;
   }
